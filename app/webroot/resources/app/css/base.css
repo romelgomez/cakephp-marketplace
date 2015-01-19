@@ -1,0 +1,182 @@
+html {
+	position: relative;
+	min-height: 100%;
+}
+body {
+	padding-top: 50px;
+	background: url(/resources/app/img/brickwall.png);
+	/* Margin bottom by footer height */
+	margin-bottom: 60px;
+}
+
+hr {
+	border-top: 1px solid #959595;
+}
+
+a{
+    color:gold;
+}
+
+a:hover{
+   color: #2a6496;
+   text-decoration: none;
+}
+
+.a-blue{
+	color: #2a6496;
+}
+
+.a-blue:hover{
+	color: #1b3d96;
+	text-decoration: none;
+}
+
+.a-white{
+	color:#ffffff;
+}
+
+.a-gold{
+	color:gold;
+}
+
+.page-header {
+	border-bottom: 1px solid #959595;
+}
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	/* Set the fixed height of the footer here */
+	height: 60px;
+	background-color: #f5f5f5;
+}
+
+.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {
+	color:gold;
+}
+.navbar-inverse .navbar-brand:hover , .navbar-inverse .navbar-nav > li > a:hover{
+	color:#428bca;
+}
+
+.main-container {
+    padding: 40px 15px;
+}
+
+.pull-left {
+       float: left !important;
+   }
+.pull-right {
+    float: right !important;
+}
+
+
+.btn-theme2 {
+	border-color: #fff;
+	background-color: transparent;
+	color: #fff;
+}
+
+.btn-theme2:hover,
+.btn-theme2:active {
+	border-color: #fff;
+	background-color: #fff;
+	color: #06979e;
+	box-shadow: none;
+}
+
+.pw-button-post-share.pw-size-small .pw-button-counter-top__count, .button-type-looknative.pw-size-small .pw-button-counter-top__count, .button-type-looknative.pw-size-medium .pw-button-counter-top__count, .button-type-looknative.pw-size-large .pw-button-counter-top__count{
+	background: url(/resources/app/img/white_brick_wall.png);
+}
+
+.caption {
+	overflow: hidden;
+}
+
+.caption h4 {
+	white-space: nowrap;
+}
+
+.thumbnail img {
+	width: 100%;
+}
+
+.price {
+	padding-right: 10px;
+	padding-left: 10px;
+}
+.ratings {
+	padding-right: 10px;
+	padding-left: 10px;
+	color: #d17581;
+}
+
+.thumbnail {
+	padding: 0;
+}
+
+.thumbnail .caption-full {
+	padding: 9px;
+	color: #333;
+}
+
+
+/*  Dropzone */
+.dropzone a.dz-remove, .dropzone-previews a.dz-remove{
+    margin-top: 5px;
+}
+
+.dropzone .dz-preview .dz-details, .dropzone-previews .dz-preview .dz-details{
+    margin-bottom: 5px;
+}
+
+.dropzone .dz-preview.dz-image-preview:hover .dz-details img, .dropzone-previews .dz-preview.dz-image-preview:hover .dz-details img {
+    opacity: 1;
+}
+
+
+.dropzone a.dz-select,
+.dropzone-previews a.dz-select {
+    background-image: -webkit-linear-gradient(top, #fafafa, #eee);
+    background-image: -moz-linear-gradient(top, #fafafa, #eee);
+    background-image: -o-linear-gradient(top, #fafafa, #eee);
+    background-image: -ms-linear-gradient(top, #fafafa, #eee);
+    color: #FFF;
+    background-image: linear-gradient(to bottom, #428bca, #357ebd);
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    border: 1px solid #eee;
+    text-decoration: none;
+    display: block;
+    padding: 4px 5px;
+    text-align: center;
+    margin-top: 5px;
+}
+.dropzone a.dz-select:hover,
+.dropzone-previews a.dz-select:hover {
+    background-image: linear-gradient(to bottom, #497EAC, #357ebd);
+}
+
+
+.dropzone a.dz-delete,
+.dropzone-previews a.dz-delete {
+    background-image: -webkit-linear-gradient(top, #fafafa, #eee);
+    background-image: -moz-linear-gradient(top, #fafafa, #eee);
+    background-image: -o-linear-gradient(top, #fafafa, #eee);
+    background-image: -ms-linear-gradient(top, #fafafa, #eee);
+    color: #FFF;
+    background-image: linear-gradient(to bottom, #EE0700, #B90000);
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    border: 1px solid #eee;
+    text-decoration: none;
+    display: block;
+    padding: 4px 5px;
+    text-align: center;
+    margin-top: 5px;
+}
+.dropzone a.dz-delete:hover,
+.dropzone-previews a.dz-delete:hover {
+    background-image: linear-gradient(to bottom, #C5241F, #B90000);
+}
+
