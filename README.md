@@ -81,7 +81,7 @@ Visit www.cakephp-marketplace.net, is very sure you will see many issues, for so
 
 ## 3) Set database
 
-The config database file is in /cakephp-marketplace/php/app/Config/database.php
+The config database file is in /cakephp-marketplace/app/Config/database.php
 
 ## 4) There are directories that are constantly rewritten, they are:
 
