@@ -1,6 +1,6 @@
 # CakePHP MarketPlace
 
-For view the demo, please visit: mystock.la 
+For view the demo, please visit: http://mystock.la/ 
 
 ## Installation
 
