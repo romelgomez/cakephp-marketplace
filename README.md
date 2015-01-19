@@ -83,7 +83,7 @@ Visit www.cakephp-marketplace.net, is very sure you will see many issues, for so
 
 The config database file is in /cakephp-marketplace/php/app/Config/database.php
 
-## 4) There are files that are constantly rewritten, they are:
+## 4) There are directories that are constantly rewritten, they are:
 
 To resolve this issues apply the following:
 
