@@ -94,3 +94,7 @@ To resolve this issues apply the following:
 `chmod 777 -R  /cakephp-marketplace/app/webroot/resources/app/img/products`
 
 `chmod 777 -R  /cakephp-marketplace/app/webroot/resources/app/img/banners`
+
+## NOTES: 
+
+- In local installation, maybe you will see error message when you try to create new user, this is because the system will try send one email for verify the user email, to avoid that, after create the new user just go to database and set [1] for email_verify of that new user. And then try login.
