@@ -34,8 +34,6 @@
     // JS
     $scripts = array();
 
-    array_push($scripts,'/resources/app/js/base.index.js');
-
     echo $this->Html->script($scripts,array('inline' => false));
 
 ?>

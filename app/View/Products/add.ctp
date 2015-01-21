@@ -274,14 +274,13 @@
     // CSS
     $css = array();
 
-//    //  Redactor http://imperavi.com/redactor/
-//    array_push($css,'/resources/library-vendor/redactor/redactor.css');
-
     //  lightbox https://github.com/ashleydw/lightbox
-    array_push($css,'/resources/library-vendor/ekko-lightbox/ekko-lightbox.min.css');
+//    array_push($css,'https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/3.0.3a/ekko-lightbox.min.css');
+array_push($css,'/resources/bower_components/ekko-lightbox/dist/ekko-lightbox.min.css');
 
-    // dropzone - https://github.com/enyo/dropzone
-    array_push($css,'/resources/library-vendor/dropzone/css/dropzone.css');
+// dropzone - https://github.com/enyo/dropzone
+//		array_push($css,'https://cdnjs.cloudflare.com/ajax/libs/dropzone/3.12.0/css/dropzone.css');
+array_push($css,'/resources/bower_components/dropzone/downloads/css/dropzone.css');
 
     array_push($css,'/resources/app/css/base.css');
 
@@ -293,26 +292,25 @@
     //  TinyMCE - http://www.tinymce.com/
     array_push($scripts,'//tinymce.cachefly.net/4.1/tinymce.min.js');
 
-
-    //  Redactor - http://imperavi.com/redactor/
-    array_push($scripts,'/resources/library-vendor/redactor/redactor.min.js');
-//    array_push($scripts,'/resources/library-vendor/redactor/langs/es.js');
-
-    //  Ekko Lightbox  - https://github.com/ashleydw/lightbox
-    array_push($scripts,'/resources/library-vendor/ekko-lightbox/ekko-lightbox.min.js');
+//  Ekko Lightbox  - https://github.com/ashleydw/lightbox
+//    array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/3.0.3a/ekko-lightbox.min.js');
+array_push($scripts,'/resources/bower_components/ekko-lightbox/dist/ekko-lightbox.min.js');
 
     //  jQuery Validation Plugin - https://github.com/jzaefferer/jquery-validation
-    //  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js');
-    //  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js');
-    array_push($scripts,'/resources/library-vendor/jquery-validate/jquery.validate.js');
-    array_push($scripts,'/resources/library-vendor/jquery-validate/additional-methods.js');
+//  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js');
+//  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js');
+array_push($scripts,'/resources/bower_components/jquery-validation/dist/jquery.validate.js');
+array_push($scripts,'/resources/bower_components/jquery-validation/dist/additional-methods.js');
+
 
     //  Purl - https://github.com/allmarkedup/purl
-    //  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/purl/2.3.1/purl.min.js');
-    array_push($scripts,'/resources/library-vendor/purl/purl.js');
+//  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/purl/2.3.1/purl.min.js');
+array_push($scripts,'/resources/bower_components/purl/purl.js');
 
-    //  dropzone  - https://github.com/sciactive/pnotify
-    array_push($scripts,'/resources/library-vendor/dropzone/dropzone.js');
+
+//  dropzone
+//  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/dropzone/3.12.0/dropzone.min.js');
+array_push($scripts,'/resources/bower_components/dropzone/downloads/dropzone.min.js');
 
     array_push($scripts,'/resources/app/js/base.publications.js');
 

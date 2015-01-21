@@ -72,34 +72,10 @@ if($data['User']['banner'] !== NULL){
                         <h2 class="text-info" style="color: gold; margin-top: 10px;">
                             <span class="glyphicon glyphicon-tag"></span>
                             Price: $<?php echo $data['Product']['price'] ?>
-<!--                                 --->
-<!--                            <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>-->
-<!--                            Phone: 0416 011022200-->
-
                         </h2>
                     </li>
                 </ul>
             </div>
-
-
-<!--            <div class="panel panel-default" style="border: 1px solid black;">-->
-<!--                <div class="panel-heading" style="background: url(/resources/app/img/skulls.png); border-bottom: 1px solid black;">-->
-<!--                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Comments:-->
-<!--                </div>-->
-<!--                <div class="panel-body">-->
-<!--                    --><?php
-//                    // lazy solution
-//                    $foo    = trim($data['Product']['title']);
-//                    $foo    = strtolower($foo);
-//                    $foo    = str_replace('/', '',$foo);
-//                    $foo    = preg_replace( '/\s+/', ' ', $foo);
-//                    $title  = str_replace(' ', '-',$foo);
-//
-////                    echo '<div class="fb-comments" data-href="http://www.santomercado.com/producto/'.$data['Product']['id'].'/'.$title.'.html" data-numposts="5" data-colorscheme="light" data-width="100%"></div>';
-//
-//                    ?>
-<!--                </div>-->
-<!--            </div>-->
 
         </div>
     </div>
@@ -110,12 +86,9 @@ if($data['User']['banner'] !== NULL){
     // CSS
     $css = array();
 
-    if(isset($userLogged)){
-        array_push($css,'/resources/library-vendor/hover/hover-min.css');
-    }
-
     //  lightBox https://github.com/ashleydw/lightbox
-    array_push($css,'/resources/library-vendor/ekko-lightbox/ekko-lightbox.min.css');
+//    array_push($css,'https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/3.0.3a/ekko-lightbox.min.css');
+    array_push($css,'/resources/bower_components/ekko-lightbox/dist/ekko-lightbox.min.css');
 
     array_push($css,'/resources/app/css/base.css');
 
@@ -124,8 +97,11 @@ if($data['User']['banner'] !== NULL){
     // JS
     $scripts = array();
 
-    //  lightbox  - https://github.com/ashleydw/lightbox
-    array_push($scripts,'/resources/library-vendor/ekko-lightbox/ekko-lightbox.min.js');
+    //  lightBox  - https://github.com/ashleydw/lightbox
+//    array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/3.0.3a/ekko-lightbox.min.js');
+    array_push($scripts,'/resources/bower_components/ekko-lightbox/dist/ekko-lightbox.min.js');
+
+	array_push($scripts,'/resources/app/js/ekko-lightbox-call.js');
 
     echo $this->Html->script($scripts,array('inline' => false));
 

@@ -128,6 +128,7 @@ a:hover{
 
 .dropzone .dz-preview .dz-details, .dropzone-previews .dz-preview .dz-details{
     margin-bottom: 5px;
+	padding: 0;
 }
 
 .dropzone .dz-preview.dz-image-preview:hover .dz-details img, .dropzone-previews .dz-preview.dz-image-preview:hover .dz-details img {

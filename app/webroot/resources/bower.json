@@ -1,0 +1,35 @@
+{
+  "name": "cakephp-marketplace",
+  "version": "0.0.1",
+  "homepage": "https://github.com/romelgomez/cakephp-marketplace",
+  "authors": [
+    "(romelgomez <https://github.com/romelgomez>)"
+  ],
+  "description": "A simple MarketPlace built with CakePHP",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node",
+    "yui"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Hover": "~2.0.0",
+    "bootstrap": "~3.3.2",
+    "dropzone": "~3.12.0",
+    "ekko-lightbox": "~3.2.0",
+    "font-awesome": "~4.2.0",
+    "jquery-validation": "~1.13.1",
+    "jquery": "1.11.2",
+    "pnotify": "~2.0.1",
+    "purl": "~2.3.1"
+  }
+}

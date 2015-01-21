@@ -12,8 +12,17 @@
 
 	<title>MarketPlace</title>
 
-	<!-- Bootstrap core CSS -->
-	<link href="/resources/library-vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<?php
+	$css = array();
+
+	//  Bootstrap
+//	array_push($css,'//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css');
+	array_push($css,'/resources/bower_components/bootstrap/dist/css/bootstrap.css');
+
+	echo $this->Html->css($css);
+
+	echo $this->fetch('css');
+	?>
 
 	<!-- Custom styles for this template -->
 	<link href="/resources/theme-vendor/cover/cover.css" rel="stylesheet">
@@ -60,10 +69,21 @@
 
 </div>
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="/resources/library-vendor/jquery/jquery-1.11.1.js"></script>
-<script src="/resources/library-vendor/bootstrap/js/bootstrap.min.js"></script>
+<?php
+$scripts = array();
+
+//  jQuery - https://github.com/jquery/jquery
+//array_push($scripts,'https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
+array_push($scripts,'/resources/bower_components/jquery/dist/jquery.js');
+
+//  Bootstrap - https://github.com/twbs/bootstrap
+//array_push($scripts,'//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js');
+array_push($scripts,'/resources/bower_components/bootstrap/dist/js/bootstrap.js');
+
+echo $this->Html->script($scripts);
+
+echo $this->fetch('script');
+
+?>
 </body>
 </html>

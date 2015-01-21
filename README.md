@@ -1,6 +1,6 @@
 # CakePHP MarketPlace
 
-For view the demo, please visit: http://mystock.la/ 
+For view the demo, please visit: http://mystock.la/
 
 ## Installation
 
@@ -95,6 +95,29 @@ To resolve this issues apply the following:
 
 `chmod 777 -R  /cakephp-marketplace/app/webroot/resources/app/img/banners`
 
-## NOTES: 
+## 5) Install bower dependencies
+
+In bash or terminal, go to `/app/webroot/resources` directory and run: `bower install`.
+
+Notes:
+ 1) You must have installed `node` and `bower` first, to run this properly.
+ 2) To avoid this step, comment the local resources and uncomment the CDN or external resources in this files:
+
+```
+   /View/Layouts/coming-soon.ctp
+   /View/Layouts/default.ctp
+   /View/Layouts/landingPage.ctp
+   /View/Layouts/login.ctp
+   /View/Products/add.ctp
+   /View/Products/drafts.ctp
+   /View/Products/published.ctp
+   /View/Products/search.ctp
+   /View/Products/stock.ctp
+   /View/Products/view.ctp
+   /View/Users/login.ctp
+   /View/Users/new_password_request.ctp
+```
+
+## NOTES:
 
 - In local installation, maybe you will see error message when you try to create new user, this is because the system will try send one email for verify the user email, to avoid that, after create the new user just go to database and set [1] for email_verify of that new user. And then try login.

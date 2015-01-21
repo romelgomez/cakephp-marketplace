@@ -191,12 +191,14 @@ if($data['User']['banner'] !== NULL){
     // CSS
     $css = array();
 
-    if(isset($userLogged)){
-        array_push($css,'/resources/library-vendor/hover/hover-min.css');
+	if(isset($userLogged)){
+//		array_push($css,'http://cdn.bootcss.com/hover.css/1.0.8/css/hover-min.css');
+		array_push($css,'/resources/bower_components/Hover/css/hover.css');
 
-        // dropzone - https://github.com/enyo/dropzone
-        array_push($css,'/resources/library-vendor/dropzone/css/dropzone.css');
-    }
+		// dropzone - https://github.com/enyo/dropzone
+//		array_push($css,'https://cdnjs.cloudflare.com/ajax/libs/dropzone/3.12.0/css/dropzone.css');
+		array_push($css,'/resources/bower_components/dropzone/downloads/css/dropzone.css');
+	}
 
     array_push($css,'/resources/app/css/stock.css');
     array_push($css,'/resources/app/css/base.css');
@@ -207,23 +209,22 @@ if($data['User']['banner'] !== NULL){
     $scripts = array();
 
     //  jQuery Validation Plugin - https://github.com/jzaefferer/jquery-validation
-    //  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js');
-    //  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js');
-    array_push($scripts,'/resources/library-vendor/jquery-validate/jquery.validate.js');
-    array_push($scripts,'/resources/library-vendor/jquery-validate/additional-methods.js');
+//	  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js');
+//    array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js');
+	array_push($scripts,'/resources/bower_components/jquery-validation/dist/jquery.validate.js');
+	array_push($scripts,'/resources/bower_components/jquery-validation/dist/additional-methods.js');
 
     //  Purl - https://github.com/allmarkedup/purl
-    //  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/purl/2.3.1/purl.min.js');
-    array_push($scripts,'/resources/library-vendor/purl/purl.js');
-
+//      array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/purl/2.3.1/purl.min.js');
+      array_push($scripts,'/resources/bower_components/purl/purl.js');
 
     if(isset($userLogged)){
-        //  dropzone  - https://github.com/sciactive/pnotify
-        array_push($scripts,'/resources/library-vendor/dropzone/dropzone.js');
+        //  dropzone
+//        array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/dropzone/3.12.0/dropzone.min.js');
+        array_push($scripts,'/resources/bower_components/dropzone/downloads/dropzone.min.js');
 
         array_push($scripts,'/resources/app/js/base.banners.js');
     }
-
 
     array_push($scripts,'/resources/app/js/base.publications.js');
 
