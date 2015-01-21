@@ -289,8 +289,8 @@ array_push($css,'/resources/bower_components/dropzone/downloads/css/dropzone.css
     // JS
     $scripts = array();
 
-    //  TinyMCE - http://www.tinymce.com/
-    array_push($scripts,'//tinymce.cachefly.net/4.1/tinymce.min.js');
+//  WYSIWYG ckeditor - http://ckeditor.com/
+    array_push($scripts,'//cdn.ckeditor.com/4.4.6/standard/ckeditor.js');
 
 //  Ekko Lightbox  - https://github.com/ashleydw/lightbox
 //    array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/3.0.3a/ekko-lightbox.min.js');
