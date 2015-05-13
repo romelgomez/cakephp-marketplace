@@ -291,11 +291,13 @@
     $scripts = array();
 
     //  TinyMCE - http://www.tinymce.com/
-    array_push($scripts,'//tinymce.cachefly.net/4.1/tinymce.min.js');
+//    array_push($scripts,'//tinymce.cachefly.net/4.1/tinymce.min.js');
 
+    //  WYSIWYG ckeditor - http://ckeditor.com/
+    array_push($scripts,'//cdn.ckeditor.com/4.4.6/standard/ckeditor.js');
 
     //  Redactor - http://imperavi.com/redactor/
-    array_push($scripts,'/resources/library-vendor/redactor/redactor.min.js');
+//    array_push($scripts,'/resources/library-vendor/redactor/redactor.min.js');
 //    array_push($scripts,'/resources/library-vendor/redactor/langs/es.js');
 
     //  Ekko Lightbox  - https://github.com/ashleydw/lightbox

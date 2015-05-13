@@ -121,15 +121,15 @@
 
     //  Bootstrap
     //  array_push($scripts,'//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css');
-    array_push($css,'/resources/library-vendor/bootstrap/css/bootstrap.css');
+    array_push($css,'/bower_components/bootstrap/dist/css/bootstrap.css');
 
     //  font-awesome
     //  array_push($scripts,'//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
-    array_push($css,'/resources/library-vendor/font-awesome/css/font-awesome.min.css');
+    array_push($css,'/bower_components/font-awesome/css/font-awesome.min.css');
 
     //  Pnotify https://github.com/sciactive/pnotify
     //  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/pnotify/2.0.0/pnotify.core.min.css');
-    array_push($css,'/resources/library-vendor/pnotify/pnotify.custom.min.css');
+    array_push($css,'/bower_components/pnotify/pnotify.core.css');
 
     //  Redactor http://imperavi.com/redactor/
     //        array_push($css,'/resources/library-vendor/redactor/redactor.css');
@@ -216,7 +216,7 @@ $scripts = array();
 
 //  jQuery - https://github.com/jquery/jquery
 //  array_push($scripts,'https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
-array_push($scripts,'/resources/library-vendor/jquery/jquery-1.11.1.js');
+//array_push($scripts,'/resources/library-vendor/jquery/jquery-1.11.1.js');
 
 //  jQueryCookie - https://github.com/carhartl/jquery-cookie
 //    array_push($scripts,'/resources/library-vendor/jquery-cookie/jquery.cookie.js');
@@ -234,7 +234,7 @@ array_push($scripts,'/resources/library-vendor/bootstrap/js/bootstrap.js');
 
 //  pnotify  - https://github.com/sciactive/pnotify
 //  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/pnotify/2.0.0/pnotify.core.min.js');
-array_push($scripts,'/resources/library-vendor/pnotify/pnotify.custom.min.js');
+//array_push($scripts,'/resources/library-vendor/pnotify/pnotify.custom.min.js');
 
 //  Ekko Lightbox  - https://github.com/ashleydw/lightbox
 //    array_push($scripts,'/resources/library-vendor/ekko-lightbox/ekko-lightbox.min.js');
@@ -248,6 +248,9 @@ array_push($scripts,'/resources/library-vendor/pnotify/pnotify.custom.min.js');
 //  Purl - https://github.com/allmarkedup/purl
 //  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/purl/2.3.1/purl.min.js');
 //    array_push($scripts,'/resources/library-vendor/purl/purl.js');
+
+array_push($scripts,'/bower_components/angular/angular.js');
+array_push($scripts,'/bower_components/angular-messages/angular-messages.js');
 
 // App
 array_push($scripts,'/resources/app/js/base.js');

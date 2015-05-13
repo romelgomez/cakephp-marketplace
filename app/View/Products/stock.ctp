@@ -13,16 +13,17 @@ if($data['User']['banner'] !== NULL){
 
 ?>
 
-<header id="banner" class="page-header" style="margin-top: 0; background: url('<?php echo $banner; ?>') no-repeat center center scroll; padding: 350px 20px 10px 20px; -webkit-background-size: cover; -moz-background-size: cover;   -o-background-size: cover;   background-size: cover;">
-	<h1>
-		<a href="/stock/<?php echo $data['User']['id']; ?>" style="text-shadow: 0 0 3px rgba(0,0,0,.8);" class="a-white"><?php echo ucfirst($data['User']['name']);  ?> Stock</a>
-		<?php
-		if(isset($userLogged)){
-			echo '- <a id="change-banner" href="#" style="text-shadow: 0 0 3px rgba(0,0,0,.8);" class="rotate a-white"><i class="fa fa-camera"></i></a>';
-		}
-		?>
-	</h1>
-</header>
+<div class="banner" style="background: url(<?php echo $banner; ?>) no-repeat center center scroll; -webkit-background-size: cover; -moz-background-size: cover;  -o-background-size: cover; background-size: cover;" >
+    <div class="banner-content">
+        <a href="/stock/<?php echo $data['User']['id']; ?>" style="text-shadow: 0 0 3px rgba(0,0,0,.8);" class="a-white"><?php echo ucfirst($data['User']['name']);  ?> Stock</a>
+        <?php
+        if(isset($userLogged)){
+            echo '- <a id="change-banner" href="#" style="text-shadow: 0 0 3px rgba(0,0,0,.8);" class="rotate a-white"><i class="fa fa-camera"></i></a>';
+        }
+        ?>
+    </div>
+</div>
+
 
 
 

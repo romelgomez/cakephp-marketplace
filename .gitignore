@@ -9,6 +9,10 @@
 /app/webroot/resources/app/img/banners/*.jpeg
 /app/webroot/resources/app/img/banners/*.gif
 
+/app/webroot/assets/images/banners/*.jpg
+/app/webroot/assets/images/products/*.jpg
+/app/webroot/bower_components
+
 /app/tmp
 /lib
 /plugins

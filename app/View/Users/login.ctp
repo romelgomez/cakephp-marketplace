@@ -1,37 +1,66 @@
 <div class="container-fluid" style="padding-top: 20px;">
     <div class="row">
-		<div class="col-xs-6 col-md-4">
+        <div class="col-xs-6 col-md-4">
 
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h2 class="panel-title">Enter your email and password to continue</h2>
-				</div>
-				<div class="panel-body">
-					<form role="form" id="login-form">
-						<div class="message"></div>
+            <section ng-controller="LoginController">
 
-						<div class="form-group">
-							<label for="login-email"><i class="fa fa-envelope-o fa-fw"></i> Email address</label>
-							<input id="login-email" name="login-email" value="" class="form-control" type="email" maxlength="128" tabindex="1" autocorrect="off" autocapitalize="off">
-							<span class="help-block" style="display: none;"></span>
-						</div>
-						<div class="form-group">
-							<label for="login-password"><i class="fa fa-key fa-fw"></i> Password</label>
-							<input type="password" class="form-control" id="login-password" name="login-password" tabindex="2">
-							<span class="help-block" style="display: none;"></span>
-						</div>
-						<button type="submit" class="btn btn-primary" tabindex="3">Enter</button>
-					</form>
-				</div>
-				<div class="panel-footer">
-					<button id="new-user" type="button" class="btn btn-link">New User?</button>
-					<button id="recover" type="button" class="btn btn-link">Forgot your password?</button>
-				</div>
-			</div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Ingrese su email y contraseña para iniciar la sesión</h3>
+                    </div>
+                    <div class="panel-body">
 
-		</div>
-		<div class="col-xs-12 col-sm-6 col-md-8">
-		</div>
+                        <div class="alert alert-danger" ng-show="loginForm.$submitted && loginForm.$error.required">
+
+                            <div data-ng-messages="loginForm.$submitted && loginForm.email.$error" class="text-danger">
+                                <div data-ng-message="required">
+                                    - La <b>dirección de correo electrónico</b> es requerida.
+                                </div>
+                            </div>
+
+                            <div data-ng-messages="loginForm.$submitted && loginForm.password.$error" class="text-danger">
+                                <div data-ng-message="required" >
+                                    - La <b>contraseña</b> es requerida.
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <form name="loginForm" novalidate="" ng-submit="login()">
+
+                            <alert data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+                            <div class="form-group">
+                                <label>Email o dirección de correo electrónico</label>
+                                <input type="email" name="email" ng-model="user.email" required class="form-control" placeholder="Ingrese su correo o email"  >
+                            </div>
+
+                            <div class="form-group">
+                                <label>Contraseña</label>
+                                <input type="password" name="password" ng-model="user.password" required class="form-control" placeholder="Ingrese su contraseña" >
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Entrar</button>
+
+                        </form>
+
+                        <br>
+
+<!--                        {{ user | json }}-->
+<!--                        {{ loginForm | json }}-->
+
+                    </div>
+                    <div class="panel-footer">
+                        <button id="new-user" type="button" class="btn btn-link">New User?</button>
+                        <button id="recover" type="button" class="btn btn-link">Forgot your password?</button>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-8">
+        </div>
     </div>
 </div>
 
@@ -167,20 +196,18 @@
     // CSS
     $css = array();
 
-    array_push($css,'/resources/app/css/base.css');
+    array_push($css,'/assets/styles/base.css');
 
     $this->Html->css($css, null, array('inline' => false));
 
     // JS
     $scripts = array();
 
-//  jQuery Validation Plugin - https://github.com/jzaefferer/jquery-validation
-//  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js');
-//  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js');
-    array_push($scripts,'/resources/library-vendor/jquery-validate/jquery.validate.js');
-    array_push($scripts,'/resources/library-vendor/jquery-validate/additional-methods.js');
+//    array_push($scripts,'/bower_components/jquery-validate/dist/jquery.validate.js');
+//    array_push($scripts,'/bower_components/jquery-validate/dist/additional-methods.js');
+//    array_push($scripts,'/resources/app/js/base.enter.js');
 
-    array_push($scripts,'/resources/app/js/base.enter.js');
+    array_push($scripts,'/assets/scripts/app.js');
 
     echo $this->Html->script($scripts,array('inline' => false));
 

@@ -104,15 +104,16 @@ $(document).ready(function(){
             return url_obj;
         };
 
-        // WYSIWYG - http://www.tinymce.com/
-		var initRedactor = function(){
+        // WYSIWYG  ckeditor - http://ckeditor.com/
+        var initRedactor = function(){
 
 //			$('#ProductBody')['redactor']();
 
-            tinymce.init({selector:'#ProductBody'});
+            CKEDITOR.replace( 'ProductBody');
 
+            CKEDITOR.instances['ProductBody'].on('change', function() { CKEDITOR.instances['ProductBody'].updateElement() });
 
-		};
+        };
 
 		/*
 		 Private Method

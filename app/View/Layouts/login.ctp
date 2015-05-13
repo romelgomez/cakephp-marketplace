@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="background: url(/resources/app/img/bg-city.jpg) no-repeat center center fixed; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover;">
+<html ng-app="app" lang="en" style="background: url(/resources/app/img/bg-city.jpg) no-repeat center center fixed; -webkit-background-size: cover;   -moz-background-size: cover;   -o-background-size: cover;   background-size: cover;">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -105,15 +105,15 @@
 
 	//  Bootstrap
 	//  array_push($scripts,'//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css');
-	array_push($css,'/resources/library-vendor/bootstrap/css/bootstrap.css');
+    array_push($css,'/bower_components/bootstrap/dist/css/bootstrap.css');
 
 	//  font-awesome
 	//  array_push($scripts,'//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
-	array_push($css,'/resources/library-vendor/font-awesome/css/font-awesome.min.css');
+    array_push($css,'/bower_components/font-awesome/css/font-awesome.min.css');
 
 	//  Pnotify https://github.com/sciactive/pnotify
 	//  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/pnotify/2.0.0/pnotify.core.min.css');
-	array_push($css,'/resources/library-vendor/pnotify/pnotify.custom.min.css');
+    array_push($css,'/bower_components/pnotify/pnotify.core.css');
 
 	//  Redactor http://imperavi.com/redactor/
 	//        array_push($css,'/resources/library-vendor/redactor/redactor.css');
@@ -200,7 +200,7 @@ $scripts = array();
 
 //  jQuery - https://github.com/jquery/jquery
 //  array_push($scripts,'https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
-array_push($scripts,'/resources/library-vendor/jquery/jquery-1.11.1.js');
+array_push($scripts,'/bower_components/jquery/dist/jquery.js');
 
 //  jQueryCookie - https://github.com/carhartl/jquery-cookie
 //    array_push($scripts,'/resources/library-vendor/jquery-cookie/jquery.cookie.js');
@@ -214,11 +214,11 @@ array_push($scripts,'/resources/library-vendor/jquery/jquery-1.11.1.js');
 
 //  Bootstrap - https://github.com/twbs/bootstrap
 //  array_push($scripts,'//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js');
-array_push($scripts,'/resources/library-vendor/bootstrap/js/bootstrap.js');
+array_push($scripts,'/bower_components/bootstrap/dist/js/bootstrap.js');
 
 //  pnotify  - https://github.com/sciactive/pnotify
 //  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/pnotify/2.0.0/pnotify.core.min.js');
-array_push($scripts,'/resources/library-vendor/pnotify/pnotify.custom.min.js');
+array_push($scripts,'/bower_components/pnotify/pnotify.core.js');
 
 //  Ekko Lightbox  - https://github.com/ashleydw/lightbox
 //    array_push($scripts,'/resources/library-vendor/ekko-lightbox/ekko-lightbox.min.js');
@@ -233,8 +233,13 @@ array_push($scripts,'/resources/library-vendor/pnotify/pnotify.custom.min.js');
 //  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/purl/2.3.1/purl.min.js');
 //    array_push($scripts,'/resources/library-vendor/purl/purl.js');
 
+array_push($scripts,'/bower_components/angular/angular.js');
+array_push($scripts,'/bower_components/angular-bootstrap/ui-bootstrap.js');
+array_push($scripts,'/bower_components/angular-bootstrap/ui-bootstrap-tpls.js');
+array_push($scripts,'/bower_components/angular-messages/angular-messages.js');
+
 // App
-array_push($scripts,'/resources/app/js/base.js');
+//array_push($scripts,'/resources/app/js/base.js');
 
 echo $this->Html->script($scripts);
 
@@ -242,15 +247,15 @@ echo $this->fetch('script');
 
 ?>
 
-<script type="text/javascript">
-	$(document).ready(function ($) {
-		// delegate calls to data-toggle="lightbox"
-		$(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
-			event.preventDefault();
-			return $(this).ekkoLightbox();
-		});
-	});
-</script>
+<!--<script type="text/javascript">-->
+<!--	$(document).ready(function ($) {-->
+<!--		// delegate calls to data-toggle="lightbox"-->
+<!--		$(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {-->
+<!--			event.preventDefault();-->
+<!--			return $(this).ekkoLightbox();-->
+<!--		});-->
+<!--	});-->
+<!--</script>-->
 
 </body>
 </html>
