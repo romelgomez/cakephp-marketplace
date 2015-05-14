@@ -3,10 +3,14 @@
 angular.module('forms',['ngMessages'])
     .controller('LoginController',['$scope','$http','$log',function($scope,$http,$log) {
 
+        $scope.sizeOf = function(obj) {
+            return Object.keys(obj).length;
+        };
+
         $scope.alerts = [];
 
         $scope.closeAlert = function(index) {
-            $scope.alerts = [];
+            $scope.alerts.splice(index, 1);
         };
 
         $scope.user = {
@@ -59,14 +63,14 @@ angular.module('forms',['ngMessages'])
 
     }]);
 
-
-angular.module('app',['ui.bootstrap','forms'])
+angular.modules('filters',[])
     .filter('capitalize', function() {
         return function(input) {
             return (!!input) ? input.replace(/([^\W_]+[^\s-]*) */g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}) : '';
         };
     });
 
+angular.module('app',['ui.bootstrap','forms']);
 
 var login = function(){
 
@@ -163,24 +167,3 @@ var login = function(){
 
     validate.form("login-form",loginUserValidateObj);
 };
-
-
-//.directive('alert'),
-//
-//
-//utility.alert = function(message,type,dismiss){
-//
-//    if ( type == undefined ) {
-//        type = 'info';
-//    }
-//
-//    var close = '';
-//    if ( dismiss == undefined || dismiss === true ) {
-//        close = '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>';
-//    }
-//
-//    return '<div class="alert alert-' + type + ' alert-dismissible" role="alert">'+
-//        close+
-//        message+
-//        '</div>';
-//};

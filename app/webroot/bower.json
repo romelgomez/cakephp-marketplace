@@ -1,0 +1,31 @@
+{
+  "name": "cakephp-marketplace",
+  "version": "0.0.1",
+  "homepage": "https://github.com/romelgomez/cakephp-marketplace",
+  "authors": [
+    "Romel Javier Gomez Herrera <bmxquiksilver7185@gmail.com>"
+  ],
+  "description": "MarketPlace",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "0.13.0",
+    "angular-messages": "1.4.0-rc.2",
+    "angular": "1.4.0-rc.2",
+    "bootstrap": "3.3.4",
+    "dropzone": "4.0.1",
+    "ekko-lightbox": "3.3.0",
+    "font-awesome": "4.3.0",
+    "hover": "2.0.2",
+    "jquery-cookie": "1.4.1",
+    "jquery-validate": "1.13.1",
+    "pnotify": "2.0.1",
+    "purl": "2.3.1"
+  }
+}

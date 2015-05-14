@@ -10,15 +10,21 @@
                     </div>
                     <div class="panel-body">
 
-                        <div class="alert alert-danger" ng-show="loginForm.$submitted && loginForm.$error.required">
+                        <div class="alert alert-danger" ng-show="loginForm.$submitted && (sizeOf(loginForm.$error)!=0)">
 
                             <div data-ng-messages="loginForm.$submitted && loginForm.email.$error" class="text-danger">
+                                <div data-ng-message="email">
+                                    - La <b>dirección de correo electrónico</b> debe ser valida.
+                                </div>
                                 <div data-ng-message="required">
                                     - La <b>dirección de correo electrónico</b> es requerida.
                                 </div>
                             </div>
 
                             <div data-ng-messages="loginForm.$submitted && loginForm.password.$error" class="text-danger">
+                                <div data-ng-message="minlength" >
+                                    - La <b>contraseña</b> debe tener como mínimo 7 caracteres.
+                                </div>
                                 <div data-ng-message="required" >
                                     - La <b>contraseña</b> es requerida.
                                 </div>
@@ -28,7 +34,7 @@
 
                         <form name="loginForm" novalidate="" ng-submit="login()">
 
-                            <alert data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+                            <alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="5000" close="closeAlert($index)">{{alert.msg}}</alert>
 
                             <div class="form-group">
                                 <label>Email o dirección de correo electrónico</label>
@@ -37,7 +43,7 @@
 
                             <div class="form-group">
                                 <label>Contraseña</label>
-                                <input type="password" name="password" ng-model="user.password" required class="form-control" placeholder="Ingrese su contraseña" >
+                                <input type="password" name="password" ng-model="user.password" required minlength="7" class="form-control" placeholder="Ingrese su contraseña" >
                             </div>
 
                             <button type="submit" class="btn btn-primary">Entrar</button>
@@ -47,7 +53,7 @@
                         <br>
 
 <!--                        {{ user | json }}-->
-<!--                        {{ loginForm | json }}-->
+<!--                        <pre>{{ loginForm | json }}</pre>-->
 
                     </div>
                     <div class="panel-footer">
@@ -189,26 +195,3 @@
         </div>
     </div>
 </div>
-
-
-<?php
-
-    // CSS
-    $css = array();
-
-    array_push($css,'/assets/styles/base.css');
-
-    $this->Html->css($css, null, array('inline' => false));
-
-    // JS
-    $scripts = array();
-
-//    array_push($scripts,'/bower_components/jquery-validate/dist/jquery.validate.js');
-//    array_push($scripts,'/bower_components/jquery-validate/dist/additional-methods.js');
-//    array_push($scripts,'/resources/app/js/base.enter.js');
-
-    array_push($scripts,'/assets/scripts/app.js');
-
-    echo $this->Html->script($scripts,array('inline' => false));
-
-?>
