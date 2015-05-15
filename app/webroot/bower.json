@@ -26,6 +26,8 @@
     "jquery-cookie": "1.4.1",
     "jquery-validate": "1.13.1",
     "pnotify": "2.0.1",
-    "purl": "2.3.1"
+    "purl": "2.3.1",
+    "angular-pnotify": "~0.0.6",
+    "angular-busy": "~4.1.3"
   }
 }

@@ -8,7 +8,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Ingrese su email y contraseña para iniciar la sesión</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" cg-busy="{promise:myPromise,message:'Loading'}">
 
                         <div class="alert alert-danger" ng-show="loginForm.$submitted && (sizeOf(loginForm.$error)!=0)">
 
@@ -34,7 +34,7 @@
 
                         <form name="loginForm" novalidate="" ng-submit="login()">
 
-                            <alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="5000" close="closeAlert($index)">{{alert.msg}}</alert>
+                            <alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="3000" close="closeAlert($index)">{{alert.msg}}</alert>
 
                             <div class="form-group">
                                 <label>Email o dirección de correo electrónico</label>

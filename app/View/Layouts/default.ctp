@@ -34,6 +34,8 @@ array_push($scripts,'/bower_components/jquery/dist/jquery.js');
 array_push($scripts,'/bower_components/bootstrap/dist/js/bootstrap.js');
 array_push($scripts,'/bower_components/pnotify/pnotify.core.js');
 array_push($scripts,'/bower_components/angular/angular.js');
+array_push($scripts,'/bower_components/angular-busy/dist/angular-busy.js');
+array_push($scripts,'/bower_components/angular-pnotify/src/angular-pnotify.js');
 array_push($scripts,'/bower_components/angular-bootstrap/ui-bootstrap.js');
 array_push($scripts,'/bower_components/angular-bootstrap/ui-bootstrap-tpls.js');
 array_push($scripts,'/bower_components/angular-messages/angular-messages.js');
@@ -42,6 +44,7 @@ array_push($scripts,'/assets/scripts/app.js');
 array_push($css,'/bower_components/bootstrap/dist/css/bootstrap.css');
 array_push($css,'/bower_components/font-awesome/css/font-awesome.min.css');
 array_push($css,'/bower_components/pnotify/pnotify.core.css');
+array_push($css,'/bower_components/angular-busy/dist/angular-busy.css');
 array_push($css,'/assets/styles/base.css');
 
 if($urlAction == 'login'){

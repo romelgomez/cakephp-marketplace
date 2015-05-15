@@ -1,6 +1,77 @@
 'use strict';
 
-angular.module('forms',['ngMessages'])
+angular.module('httpDelay',[])
+    .config(['$httpProvider', function($httpProvider) {
+        // http://www.bennadel.com/blog/2802-simulating-network-latency-in-angularjs-with-http-interceptors-and-timeout.htm
+
+        $httpProvider.interceptors.push( httpDelay );
+
+
+        // I add a delay to both successful and failed responses.
+        function httpDelay( $timeout, $q ) {
+
+            var delayInMilliseconds = 3000;
+
+            // Return our interceptor configuration.
+            return({
+                response: response,
+                responseError: responseError
+            });
+
+
+            // ---
+            // PUBLIC METHODS.
+            // ---
+
+
+            // I intercept successful responses.
+            function response( response ) {
+
+                var deferred = $q.defer();
+
+                $timeout(
+                    function() {
+
+                        deferred.resolve( response );
+
+                    },
+                    delayInMilliseconds,
+                    // There's no need to trigger a $digest - the view-model has
+                    // not been changed.
+                    false
+                );
+
+                return( deferred.promise );
+
+            }
+
+
+            // I intercept error responses.
+            function responseError( response ) {
+
+                var deferred = $q.defer();
+
+                $timeout(
+                    function() {
+
+                        deferred.reject( response );
+
+                    },
+                    delayInMilliseconds,
+                    // There's no need to trigger a $digest - the view-model has
+                    // not been changed.
+                    false
+                );
+
+                return( deferred.promise );
+
+            }
+
+        }
+
+    }]);
+
+angular.module('forms',['ngMessages','cgBusy'])
     .controller('LoginController',['$scope','$http','$log',function($scope,$http,$log) {
 
         $scope.sizeOf = function(obj) {
@@ -20,7 +91,7 @@ angular.module('forms',['ngMessages'])
 
         $scope.login = function(){
             if($scope.loginForm.$valid){
-                $http.post('/in', $scope.user).
+                $scope.myPromise = $http.post('/in', $scope.user).
                     success(function(data) {
 
                         var message = '';
@@ -72,98 +143,102 @@ angular.module('filters',[])
 
 angular.module('app',['ui.bootstrap','forms']);
 
-var login = function(){
 
-    var notification;
 
-    var request_parameters = {
-        "requestType":"form",
-        "type":"post",
-        "url":"/in",
-        "data":{},
-        "form":{
-            "id":"login-form",
-            "inputs":[
-                {'id':'login-email',          'name':'email'},
-                {'id':'login-password',       'name':'password'}
-            ]
-        },
-        "callbacks":{
-            "beforeSend":function(){
-                notification = ajax.notification("beforeSend");
-            },
-            "success":function(response){
 
-                var message = '';
 
-                if(response['status'] === 'success'){
-                    window.location = "/";
-                }else{
-                    ajax.notification("complete",notification);
-
-                    switch (response['message']) {
-                        case 'user-not-exist':
-                            message = 'This email does not exist in our database.';
-                            break;
-                        case 'password-does-not-match':
-                            message = 'The password does not match.';
-                            break;
-                        case 'banned':
-                            message = 'This account was banned. Please contact us at support@mystock.la if you believe that there was a misunderstanding.';
-                            break;
-                        case 'suspended':
-                            message = 'This account was suspended. Please contact us at support@mystock.la if you believe that there was a misunderstanding.';
-                            break;
-                        case 'email-not-verified':
-                            message = 'The email is not verified. <button id="send-email-again" type="button" class="btn btn-link">Send me the email again.</button>';
-                            break;
-                        case 'no-login':
-                            message = 'An unexpected error occurred.';
-                            break;
-                        default:
-                            message = 'An unexpected error occurred.';
-                    }
-
-                    $("#login-form").find('.message').html(utility.alert(message,'danger'));
-                }
-
-            },
-            "error":function(){
-                ajax.notification("error",notification);
-            },
-            "complete":function(){
-            }
-        }
-    };
-
-    // Validation:
-    var loginUserValidateObj = {
-        "submitHandler": function(){
-            ajax.request(request_parameters);
-        },
-        "rules":{
-            "login-email":{
-                "required":true,
-                "email": true,
-                "maxlength":30
-            },
-            "login-password":{
-                "required":true,
-                "rangelength": [7, 21]
-            }
-        },
-        "messages":{
-            "login-email":{
-                "required":"The email is required.",
-                "email":"You must provide a valid email.",
-                "maxlength":"The email must not have more than 30 characters."
-            },
-            "login-password":{
-                "required":"The password is required.",
-                "rangelength":"You must provide a password that is between 7 and 21 characters."
-            }
-        }
-    };
-
-    validate.form("login-form",loginUserValidateObj);
-};
+//        var notification;
+//
+//        $scope.newUser = function(){
+//        };
+//
+//        $scope.endNotification = function(){
+//        };
+//        // alternatively, register the interceptor via an anonymous factory
+//        $httpProvider.interceptors.push(function() {
+//            return {
+//                'request': function(config) {
+//                    notification = Notification.set("beforeSend")
+//                },
+//
+//                'response': function(response) {
+//                    Notification.set("complete",notification);
+//                }
+//            };
+//        });
+//
+//.factory('Notification',function(notificationService){
+//
+//    var defaultOptions = {
+//        'init' : {
+//            'title':    'Processing',
+//            'text' :    'Wait a moment while we process your request.',
+//            'type':     'info',
+//            'icon':     'fa fa-spinner fa-spin',
+//            'hide':     false,
+//            'closer':   false,
+//            'sticker':  false,
+//            'opacity':  .75,
+//            'shadow':   false,
+//            'history':  false
+//        },
+//        'success' : {
+//            'title':    'Ready!',
+//            'text' :    'Your request has been processed successfully.',
+//            'type':     'success',
+//            'hide':     true,
+//            'closer':   true,
+//            'sticker':  true,
+//            'icon':     'glyphicon glyphicon-ok-sign',
+//            'opacity':  1,
+//            'shadow':   true,
+//            'history':  true
+//        },
+//        'error': {
+//            'title':    'Error!',
+//            'text' :    'An error has occurred while processing your request.',
+//            'type' :    'error',
+//            'icon':     'glyphicon glyphicon-warning-sign',
+//            'hide':     true,
+//            'closer':   true,
+//            'sticker':  true,
+//            'opacity':  1,
+//            'shadow':   true,
+//            'history':  true
+//        }
+//    };
+//
+//    return {
+//        set: function(event,notification,options){
+//            switch(event) {
+//                case 'beforeSend':
+//                    var notice;
+//                    if ( options !== undefined ) {
+//                        notice = notificationService.notify(options);
+//                    }else{
+//                        notice = notificationService.notify(defaultOptions['init']);
+//                    }
+//                    break;
+//                case 'success':
+//                    if ( options !== undefined ) {
+//                        notification.update(options);
+//                    }else{
+//                        notification.update(defaultOptions['success']);
+//                    }
+//                    break;
+//                case 'error':
+//                    if ( options !== undefined ) {
+//                        notification.update(options);
+//                    }else{
+//                        notification.update(defaultOptions['error']);
+//                    }
+//                    break;
+//                case 'complete':
+//                    notification.remove();
+//                    break;
+//            }
+//
+//            return notice;
+//        }
+//    }
+//});
