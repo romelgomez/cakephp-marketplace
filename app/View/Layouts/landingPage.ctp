@@ -10,90 +10,6 @@
 	<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 	<meta http-equiv="pragma" content="no-cache" />
 
-	<?php
-
-	$data = $this->{'request'}->{'data'};
-
-	// facebook
-	if(isset($url_action)){
-		if($url_action == 'product'){
-
-			// Title URL -  lazy solution
-			$foo    = trim($data['Product']['title']);
-			$foo    = strtolower($foo);
-			$foo    = str_replace('/', '',$foo);
-			$foo    = preg_replace( '/\s+/', ' ', $foo);
-			$title  = str_replace(' ', '-',$foo);
-
-			// Description
-			$text =  $data['Product']['body'];
-
-			$description = '';
-			$_description        =  strip_tags($text);     // remove html entities
-			$_description        =  trim($_description);   // remove whitespaces
-			$_descriptionLength  =  strlen($_description); // Get string length
-
-			if($_descriptionLength > 200){
-				$_description = substr($_description, 0, 140);      // Return part of a string
-				$_description =  explode(" ",$_description);        // returns an array containing all the words found inside the string
-				for($i = 0; $i < sizeof($_description)-1; $i++){
-					$description .= ' '.(string)$_description[$i];
-				}
-				$description = ucfirst(trim($description)).' ...';
-			}else{
-				$description = ucfirst($_description);
-			}
-
-
-			echo '<title>CakePHP-MarketPlace - '.$data['Product']['title'].' - '.$data['User']['name'].' Stock</title>';
-
-			echo '<meta property="og:title" content="'.$data['Product']['title'].'" />';
-			echo '<meta property="og:url" content="http://www.mystock.la/producto/'.$data['Product']['id'].'/'.$title.'.html" />';
-			echo '<meta property="og:type" content="website" />';
-			echo '<meta property="og:site_name" content="MyStock.LA" />';
-			echo '<meta property="og:description" content="'.$description.'" />';
-			echo '<meta property="og:image" content="http://www.mystock.la/resources/app/img/products/'.$data['Image'][0]['facebook'].'" />';
-			echo '<meta property="fb:app_id" content="338515926310582" />';
-
-
-			echo '<meta name="twitter:card" content="summary_large_image" />';
-			echo '<meta name="twitter:site" content="@mystockla" />';
-			echo '<meta name="twitter:title" content="'.$data['Product']['title'].'" />';
-			echo '<meta name="twitter:description" content="'.$description.'">';
-			echo '<meta name="twitter:image:src" content="http://www.mystock.la/resources/app/img/products/'.$data['Image'][0]['facebook'].'" />';
-			echo '<meta name="twitter:url" content="http://www.mystock.la/stock/'.$data['Product']['user_id'].'" />';
-
-		}
-
-		if($url_action == 'stock'){
-
-			if($data['User']['banner'] !== NULL){
-				$banner = 'resources/app/img/banners/'.$data['User']['banner'];
-			}else{
-				$banner = 'resources/app/img/benjaminFranklin.jpg';
-			}
-
-			echo '<title>CakePHP-MarketPlace  - '.$data['User']['name'].' Stock</title>';
-
-			echo '<meta property="og:title" content="'.$data['User']['name'].' Stock" />';
-			echo '<meta property="og:url" content="http://www.mystock.la/stock/'.$data['User']['id'].'" />';
-			echo '<meta property="og:type" content="website" />';
-			echo '<meta property="og:site_name" content="MyStock.LA" />';
-			echo '<meta property="og:description" content="Visita el stock de producto y/o servicios que tengo para ti" />';
-			echo '<meta property="og:image" content="http://www.mystock.la/'.$banner.'" />';
-			echo '<meta property="fb:app_id" content="338515926310582" />';
-
-			echo '<meta name="twitter:card" content="summary_large_image" />';
-			echo '<meta name="twitter:site" content="@mystockla" />';
-			echo '<meta name="twitter:title" content="'.$data['User']['name'].' Stock" />';
-			echo '<meta name="twitter:description" content="Visita el stock de producto y/o servicios que tengo para ti">';
-			echo '<meta name="twitter:image:src" content="http://www.mystock.la/'.$banner.'" />';
-			echo '<meta name="twitter:url" content="http://www.mystock.la/stock/'.$data['User']['id'].'" />';
-		}
-	}else{
-		echo '<title>CakePHP-MarketPlace</title>';
-	}
-	?>
 
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -102,33 +18,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 
 	<?php
-	$css = array();
-
-	//  Bootstrap
-	//  array_push($scripts,'//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css');
-	array_push($css,'/resources/library-vendor/bootstrap/css/bootstrap.css');
-
-	//  font-awesome
-	//  array_push($scripts,'//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
-	array_push($css,'/resources/library-vendor/font-awesome/css/font-awesome.min.css');
-
-	//  Pnotify https://github.com/sciactive/pnotify
-	//  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/pnotify/2.0.0/pnotify.core.min.css');
-	array_push($css,'/resources/library-vendor/pnotify/pnotify.custom.min.css');
-
-	//  Redactor http://imperavi.com/redactor/
-	//        array_push($css,'/resources/library-vendor/redactor/redactor.css');
-
-	//  jqTree http://mbraak.github.io/jqTree/
-	//        array_push($css,'/resources/library-vendor/jqtree/jqtree.css');
-
-	//  lightbox https://github.com/ashleydw/lightbox
-	//        array_push($css,'/resources/library-vendor/ekko-lightbox/ekko-lightbox.min.css');
-
-	//        array_push($css,'/resources/app/css/base.css');
-
 	echo $this->Html->css($css);
-
 	echo $this->fetch('css');
 	?>
 
@@ -214,51 +104,8 @@
 </div>
 
 <?php
-
-$scripts = array();
-
-//  jQuery - https://github.com/jquery/jquery
-//  array_push($scripts,'https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
-array_push($scripts,'/resources/library-vendor/jquery/jquery-1.11.1.js');
-
-//  jQueryCookie - https://github.com/carhartl/jquery-cookie
-//    array_push($scripts,'/resources/library-vendor/jquery-cookie/jquery.cookie.js');
-
-//  jqTree - http://mbraak.github.io/jqTree/
-//    array_push($scripts,'/resources/library-vendor/jqtree/tree.jquery.js');
-
-//  Redactor - http://imperavi.com/redactor/
-//    array_push($scripts,'/resources/library-vendor/redactor/redactor.min.js');
-//    array_push($scripts,'/resources/library-vendor/redactor/langs/es.js');
-
-//  Bootstrap - https://github.com/twbs/bootstrap
-//  array_push($scripts,'//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js');
-array_push($scripts,'/resources/library-vendor/bootstrap/js/bootstrap.js');
-
-//  pnotify  - https://github.com/sciactive/pnotify
-//  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/pnotify/2.0.0/pnotify.core.min.js');
-array_push($scripts,'/resources/library-vendor/pnotify/pnotify.custom.min.js');
-
-//  Ekko Lightbox  - https://github.com/ashleydw/lightbox
-//    array_push($scripts,'/resources/library-vendor/ekko-lightbox/ekko-lightbox.min.js');
-
-//  jQuery Validation Plugin - https://github.com/jzaefferer/jquery-validation
-//  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js');
-//  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js');
-//    array_push($scripts,'/resources/library-vendor/jquery-validate/jquery.validate.js');
-//    array_push($scripts,'/resources/library-vendor/jquery-validate/additional-methods.js');
-
-//  Purl - https://github.com/allmarkedup/purl
-//  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/purl/2.3.1/purl.min.js');
-//    array_push($scripts,'/resources/library-vendor/purl/purl.js');
-
-// App
-array_push($scripts,'/resources/app/js/base.js');
-
 echo $this->Html->script($scripts);
-
 echo $this->fetch('script');
-
 ?>
 
 <script type="text/javascript">
