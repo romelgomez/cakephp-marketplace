@@ -72,6 +72,44 @@ angular.module('httpDelay',[])
     }]);
 
 angular.module('forms',['ngMessages','cgBusy'])
+    .factory('formCommon',function(){
+
+//        var messages = {
+//            userNotExist:'This email does not exist in our database.',
+//            passwordDoesNotMatch:'The password does not match.',
+//            banned:'This account was banned. Please contact us at support@cakephp-marketplace.com if you believe that there was a misunderstanding.',
+//            suspended:'',
+//            emailNotVerified:'The email is not verified. <button id="send-email-again" type="button" class="btn btn-link">Send me the email again.</button>',
+//            noLogin:'An unexpected error occurred.'
+//        };
+//
+//        switch (data.message) {
+//            case 'user-not-exist':
+//                message = ;
+//                break;
+//            case 'password-does-not-match':
+//                message = 'The password does not match.';
+//                break;
+//            case 'banned':
+//                message = 'This account was banned. Please contact us at support@cakephp-marketplace.com if you believe that there was a misunderstanding.';
+//                break;
+//            case 'suspended':
+//                message = 'This account was suspended. Please contact us at support@cakephp-marketplace.com if you believe that there was a misunderstanding.';
+//                break;
+//            case 'email-not-verified':
+//                message = '';
+//                break;
+//            case 'no-login':
+//                message = 'An unexpected error occurred.';
+//                break;
+//            default:
+//                message = 'An unexpected error occurred.';
+//        }
+//
+
+        return {
+        }
+    })
     .controller('LoginController',['$scope','$http','$log',function($scope,$http,$log) {
 
         $scope.sizeOf = function(obj) {
@@ -142,103 +180,3 @@ angular.module('filters',[])
     });
 
 angular.module('app',['ui.bootstrap','forms']);
-
-
-
-
-
-//        var notification;
-//
-//        $scope.newUser = function(){
-//        };
-//
-//        $scope.endNotification = function(){
-//        };
-//        // alternatively, register the interceptor via an anonymous factory
-//        $httpProvider.interceptors.push(function() {
-//            return {
-//                'request': function(config) {
-//                    notification = Notification.set("beforeSend")
-//                },
-//
-//                'response': function(response) {
-//                    Notification.set("complete",notification);
-//                }
-//            };
-//        });
-//
-//.factory('Notification',function(notificationService){
-//
-//    var defaultOptions = {
-//        'init' : {
-//            'title':    'Processing',
-//            'text' :    'Wait a moment while we process your request.',
-//            'type':     'info',
-//            'icon':     'fa fa-spinner fa-spin',
-//            'hide':     false,
-//            'closer':   false,
-//            'sticker':  false,
-//            'opacity':  .75,
-//            'shadow':   false,
-//            'history':  false
-//        },
-//        'success' : {
-//            'title':    'Ready!',
-//            'text' :    'Your request has been processed successfully.',
-//            'type':     'success',
-//            'hide':     true,
-//            'closer':   true,
-//            'sticker':  true,
-//            'icon':     'glyphicon glyphicon-ok-sign',
-//            'opacity':  1,
-//            'shadow':   true,
-//            'history':  true
-//        },
-//        'error': {
-//            'title':    'Error!',
-//            'text' :    'An error has occurred while processing your request.',
-//            'type' :    'error',
-//            'icon':     'glyphicon glyphicon-warning-sign',
-//            'hide':     true,
-//            'closer':   true,
-//            'sticker':  true,
-//            'opacity':  1,
-//            'shadow':   true,
-//            'history':  true
-//        }
-//    };
-//
-//    return {
-//        set: function(event,notification,options){
-//            switch(event) {
-//                case 'beforeSend':
-//                    var notice;
-//                    if ( options !== undefined ) {
-//                        notice = notificationService.notify(options);
-//                    }else{
-//                        notice = notificationService.notify(defaultOptions['init']);
-//                    }
-//                    break;
-//                case 'success':
-//                    if ( options !== undefined ) {
-//                        notification.update(options);
-//                    }else{
-//                        notification.update(defaultOptions['success']);
-//                    }
-//                    break;
-//                case 'error':
-//                    if ( options !== undefined ) {
-//                        notification.update(options);
-//                    }else{
-//                        notification.update(defaultOptions['error']);
-//                    }
-//                    break;
-//                case 'complete':
-//                    notification.remove();
-//                    break;
-//            }
-//
-//            return notice;
-//        }
-//    }
-//});
