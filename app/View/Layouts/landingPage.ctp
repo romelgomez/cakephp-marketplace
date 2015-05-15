@@ -14,9 +14,6 @@
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
-	<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-
 	<?php
 	echo $this->Html->css($css);
 	echo $this->fetch('css');
@@ -30,77 +27,46 @@
 	<![endif]-->
 </head>
 <body>
-<!--<div id="fb-root"></div>-->
-<!--<script>-->
-<!--	window.fbAsyncInit = function() {-->
-<!--		FB.init({-->
-<!--			appId      : '338515926310582',-->
-<!--			xfbml      : true,-->
-<!--			version    : 'v2.1'-->
-<!--		});-->
-<!--	};-->
-<!---->
-<!--	(function(d, s, id){-->
-<!--		var js, fjs = d.getElementsByTagName(s)[0];-->
-<!--		if (d.getElementById(id)) {return;}-->
-<!--		js = d.createElement(s); js.id = id;-->
-<!--		js.src = "//connect.facebook.net/en_US/sdk.js";-->
-<!--		fjs.parentNode.insertBefore(js, fjs);-->
-<!--	}(document, 'script', 'facebook-jssdk'));-->
-<!--</script>-->
 
-
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background: url(/resources/app/img/escheresque_ste.png); border-bottom: 1px solid black;">
-	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-			<span class="sr-only">Toggle navigation</span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button>
-		<a class="navbar-brand a-gold" href="/" >CakePHP-MarketPlace</a>
-	</div>
-	<div class="collapse navbar-collapse">
-		<ul class="nav navbar-nav">
-
-			<?php if(isset($userLogged)){ ?>
-				<li class=""><a href="/publish"><span class="glyphicon glyphicon-globe"></span> Publish</a></li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> Account <?php if(isset($userLogged)){ echo '( '.$userLogged['User']['name'].' )'; } ?> <span class="caret"></span></a>
-					<ul class="dropdown-menu" role="menu">
-						<li role="presentation" class="dropdown-header">PRODUCTS</li>
-						<li><a href="/published"><span class="glyphicon glyphicon-bullhorn"></span> Published</a></li>
-						<li><a href="/drafts"><span class="glyphicon glyphicon-pencil"></span> Drafts</a></li>
-						<li><a href="/stock/<?php echo $userLogged['User']['id']; ?>"><span class="glyphicon glyphicon-th"></span> Stock</a></li>
-						<!--                                <li class="divider"></li>-->
-						<!--                                <li><a href="#"><span class="glyphicon glyphicon-wrench"></span> <del>Configuración</del></a></li>-->
-					</ul>
-				</li>
-			<?php } ?>
-			<?php
-			if(isset($userLogged)){
-				echo '<li class=""><a href="/logout" class="menu" ><span class="glyphicon glyphicon-off"></span>  Sign out</a></li>';
-			}else{
-				echo '<li class=""><a href="/login" class="menu" ><span class="glyphicon glyphicon-off"></span> Log in</a></li>';
-			}
-			?>
-		</ul>
-	</div><!--/.nav-collapse -->
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">CakePHP-MarketPlace</a>
+    </div>
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <?php if(isset($userLogged)){ ?>
+                <li><a ng-href="/publish"><span class="glyphicon glyphicon-globe"></span> Publish</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> Account <?php if(isset($userLogged)){ echo '( '.$userLogged['User']['name'].' )'; } ?> <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="presentation" class="dropdown-header">PRODUCTS</li>
+                        <li><a ng-href="/published"><span class="glyphicon glyphicon-bullhorn"></span> Published</a></li>
+                        <li><a ng-href="/drafts"><span class="glyphicon glyphicon-pencil"></span> Drafts</a></li>
+                        <li><a ng-href="/stock/<?php echo $userLogged['User']['id']; ?>"><span class="glyphicon glyphicon-th"></span> Stock</a></li>
+                    </ul>
+                </li>
+                <li><a ng-href="/logout" class="menu" ><span class="glyphicon glyphicon-off"></span> Sign out</a></li>
+            <?php }else{ ?>
+                <li><a ng-href="/login" class="menu" ><span class="glyphicon glyphicon-off"></span> Log in</a></li>
+            <?php } ?>
+        </ul>
+    </div><!--/.nav-collapse -->
 </div>
 
-<div class="main-container">
-	<?php echo $this->fetch('content'); ?>
-</div>
-
+<?php echo $this->fetch('content'); ?>
 
 
 <!-- footer -->
-<div class="footer" style="background: #222; background: url(/resources/app/img/escheresque_ste.png); border-top: 1px solid black;">
-	<div style="text-align: center; margin-top: 20px; color: #ffffff;">
-		Copyright &copy;2014 CakePHP-MarketPlace - All rights reserved.
-		<a href="/terms-of-service" target="_blank" class="a-gold">Terms of Service</a> &
-		<a href="/privacy-policy" target="_blank" class="a-gold">Privacy Policy</a>.
-	</div>
+<div class="footer">
+    Copyright &copy;2014 CakePHP-MarketPlace - All rights reserved.
+    <a href="/terms-of-service" target="_blank" class="a-gold">Terms of Service</a> &
+    <a href="/privacy-policy" target="_blank" class="a-gold">Privacy Policy</a>.
 </div>
 
 <?php

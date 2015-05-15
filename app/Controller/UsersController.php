@@ -46,7 +46,7 @@ class UsersController extends AppController{
 			$this->{'redirect'}('/');
 		}
 		$this->response->disableCache();
-		$this->layout = 'login';
+//		$this->layout = 'login';
 	}
 
 	/*

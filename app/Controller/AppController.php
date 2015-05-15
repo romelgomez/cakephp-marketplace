@@ -63,9 +63,10 @@ class AppController extends Controller {
             'timeout' => 4320 //3 days
         ));
 
-//		debug($this->{'request'}->url);
-//		$url_action = strstr($this->{'request'}->url, '/', true); // Desde PHP 5.3.0
-//		$this->{'set'}('url_action',$url_action);
+        $data = $this->{'request'}->data;
+
+        $urlAction = $this->{'request'}->url;
+//		$urlAction = strstr($this->{'request'}->url, '/', true); // Desde PHP 5.3.0
 
 		$scripts = array();
 
@@ -90,12 +91,14 @@ class AppController extends Controller {
 		array_push($css,'/bower_components/pnotify/pnotify.core.css');
 		array_push($css,'/assets/styles/base.css');
 
+        if($urlAction == 'login'){
+            array_push($css,'/assets/styles/login.css');
+        }
+
 
 //  Redactor http://imperavi.com/redactor/
 //  array_push($css,'/resources/library-vendor/redactor/redactor.css');
 
-		$data = $this->{'request'}->data;
-		$urlAction = $this->{'request'}->url;
 
 		switch($urlAction){
 			case 'product':
