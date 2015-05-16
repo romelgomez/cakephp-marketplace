@@ -62,6 +62,88 @@ class UsersController extends AppController{
         $this->{'redirect'}('/');
     }
 
+	private function responseMessages($type,$I18n){
+
+		if(!$I18n){
+			$I18n = 'us_EN';
+		}
+
+		// status
+		// message
+		// messageType
+
+		$messages = array(
+			'alreadyVerified'=>array(
+				'us_EN'=>'',
+				'es_VE'=>''
+			),
+			'banned'=>array(
+				'us_EN'=>'This account was banned.',
+				'es_VE'=>'Esta cuenta fue prohibida.'
+			),
+			'cannotSetNewParameters'=>array(
+				'us_EN'=>'',
+				'es_VE'=>''
+			),
+			'cannotSaveNewUser'=>array(
+				'us_EN'=>'',
+				'es_VE'=>''
+			),
+			'cannotSetNewPassword'=>array(
+				'us_EN'=>'',
+				'es_VE'=>''
+			),
+			'emailNotVerified'=>array(
+				'us_EN'=>'The email is not verified.',
+				'es_VE'=>'El correo electrónico no se ha verificado.'
+			),
+			'emailNotSend'=>array(
+				'us_EN'=>'',
+				'es_VE'=>''
+			),
+			'invalidData'=>array(
+				'us_EN'=>'',
+				'es_VE'=>''
+			),
+			'passwordDoesNotMatch'=>array(
+				'us_EN'=>'The password does not match.',
+				'es_VE'=>'La contraseña no coincide.'
+			),
+			'requestAccepted'=>array(
+				'us_EN'=>'',
+				'es_VE'=>''
+			),
+			'suspended'=>array(
+				'us_EN'=>'Esta cuenta fue suspendida.',
+				'es_VE'=>''
+			),
+			'theLinkIsInvalid'=>array(
+				'us_EN'=>'',
+				'es_VE'=>''
+			),
+			'theKeyIsInvalid'=>array(
+				'us_EN'=>'',
+				'es_VE'=>''
+			),
+			'userAlreadyExist'=>array(
+				'us_EN'=>'',
+				'es_VE'=>''
+			),
+			'userNotExist'=>array(
+				'us_EN'=>'This email does not exist in our database.',
+				'es_VE'=>'Esta dirección de correo electrónico no existe en nuestra base de datos.'
+			),
+			'unexpectedError'=>array(
+				'us_EN'=>'An unexpected error occurred.',
+				'es_VE'=>'Se ha producido un error inesperado.'
+			)
+		);
+
+		return $messages[$type][$I18n];
+	}
+
+
+
 	/*
 	 @Name              -> in
 	 @Description       -> Login real action. Sign in method.
@@ -97,28 +179,35 @@ class UsersController extends AppController{
 							if($this->{'Auth'}->login($user)){
 								$return['status'] = 'success';
 							}else{
-								$return['status'] = 'error';
-								$return['message'] = 'no-login';
+								$return['status'] 		= 'error';
+								$return['message'] 		= $this->responseMessages('unexpectedError','es_VE');
+								$return['messageType'] 	= 'unexpectedError';
 							}
 						}else{
 							$return['status'] = 'error';
-							$return['message'] = 'email-not-verified';
+							$return['message'] 		= $this->responseMessages('emailNotVerified','es_VE');
+							$return['messageType'] 	= 'emailNotVerified';
 						}
 					}else{
 						$return['status'] = 'error';
-						$return['message'] = 'suspended';
+						$return['message'] 		= $this->responseMessages('suspended','es_VE');
+						$return['messageType'] 	= 'suspended';
 					}
 				}else{
 					$return['status'] = 'error';
-					$return['message'] = 'banned';
+					$return['message'] 		= $this->responseMessages('banned','es_VE');
+					$return['messageType'] 	= 'banned';
 				}
 			}else{
 				$return['status'] = 'error';
-				$return['message'] = 'password-does-not-match';
+				$return['message'] 		= $this->responseMessages('passwordDoesNotMatch','es_VE');
+				$return['messageType'] 	= 'passwordDoesNotMatch';
 			}
 		}else{
 			$return['status'] = 'error';
-			$return['message'] = 'user-not-exist';
+			$return['message'] 		= $this->responseMessages('userNotExist','es_VE');
+			$return['messageType'] 	= 'userNotExist';
+
 		}
 
 		$this->{'set'}('return',$return);
@@ -166,7 +255,7 @@ class UsersController extends AppController{
 						$return['status'] = 'success';
 					}else{
 						$return['status'] = 'error';
-						$return['message'] = 'cannot-set-new-parameter';
+						$return['message'] = 'cannot-set-new-parameters';
 					}
 
 				}else{

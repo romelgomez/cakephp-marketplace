@@ -74,39 +74,6 @@ angular.module('httpDelay',[])
 angular.module('forms',['ngMessages','cgBusy'])
     .factory('formCommon',function(){
 
-//        var messages = {
-//            userNotExist:'This email does not exist in our database.',
-//            passwordDoesNotMatch:'The password does not match.',
-//            banned:'This account was banned. Please contact us at support@cakephp-marketplace.com if you believe that there was a misunderstanding.',
-//            suspended:'',
-//            emailNotVerified:'The email is not verified. <button id="send-email-again" type="button" class="btn btn-link">Send me the email again.</button>',
-//            noLogin:'An unexpected error occurred.'
-//        };
-//
-//        switch (data.message) {
-//            case 'user-not-exist':
-//                message = ;
-//                break;
-//            case 'password-does-not-match':
-//                message = 'The password does not match.';
-//                break;
-//            case 'banned':
-//                message = 'This account was banned. Please contact us at support@cakephp-marketplace.com if you believe that there was a misunderstanding.';
-//                break;
-//            case 'suspended':
-//                message = 'This account was suspended. Please contact us at support@cakephp-marketplace.com if you believe that there was a misunderstanding.';
-//                break;
-//            case 'email-not-verified':
-//                message = '';
-//                break;
-//            case 'no-login':
-//                message = 'An unexpected error occurred.';
-//                break;
-//            default:
-//                message = 'An unexpected error occurred.';
-//        }
-//
-
         return {
         }
     })
@@ -132,35 +99,12 @@ angular.module('forms',['ngMessages','cgBusy'])
                 $scope.myPromise = $http.post('/in', $scope.user).
                     success(function(data) {
 
-                        var message = '';
+						$log.log('data:',data);
 
                         if(data['status'] === 'success'){
                             window.location = "/";
                         }else{
-                            switch (data.message) {
-                                case 'user-not-exist':
-                                    message = 'This email does not exist in our database.';
-                                    break;
-                                case 'password-does-not-match':
-                                    message = 'The password does not match.';
-                                    break;
-                                case 'banned':
-                                    message = 'This account was banned. Please contact us at support@cakephp-marketplace.com if you believe that there was a misunderstanding.';
-                                    break;
-                                case 'suspended':
-                                    message = 'This account was suspended. Please contact us at support@cakephp-marketplace.com if you believe that there was a misunderstanding.';
-                                    break;
-                                case 'email-not-verified':
-                                    message = 'The email is not verified. <button id="send-email-again" type="button" class="btn btn-link">Send me the email again.</button>';
-                                    break;
-                                case 'no-login':
-                                    message = 'An unexpected error occurred.';
-                                    break;
-                                default:
-                                    message = 'An unexpected error occurred.';
-                            }
-
-                            $scope.alerts.push({ type: 'danger', msg: message });
+                            $scope.alerts.push({ type: 'danger', msg: data.message });
                         }
 
                     }).

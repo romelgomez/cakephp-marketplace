@@ -34,7 +34,7 @@
 
                         <form name="loginForm" novalidate="" ng-submit="login()">
 
-                            <alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="3000" close="closeAlert($index)">{{alert.msg}}</alert>
+                            <alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="4000" close="closeAlert($index)">{{alert.msg}}</alert>
 
                             <div class="form-group">
                                 <label>Email o dirección de correo electrónico</label>
