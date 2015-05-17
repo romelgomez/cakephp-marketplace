@@ -72,41 +72,37 @@ angular.module('httpDelay',[])
     }]);
 
 angular.module('forms',['ngMessages','cgBusy'])
-    .factory('formCommon',function(){
+	.controller('FormsController',['$scope',function($scope){
+		$scope.sizeOf = function(obj) {
+			var len = 0, key;
+			for (key in obj) {
+				if (obj.hasOwnProperty(key)) len++;
+			}
+			return len;
+		};
 
-        return {
-        }
-    })
-    .controller('LoginController',['$scope','$http','$log',function($scope,$http,$log) {
+		$scope.alerts = [];
 
-        $scope.sizeOf = function(obj) {
-            return Object.keys(obj).length;
-        };
+		$scope.closeAlert = function(index) {
+			$scope.alerts.splice(index, 1);
+		};
+	}])
+    .controller('LoginFormController',['$scope','$http','$log',function($scope,$http,$log) {
 
-        $scope.alerts = [];
-
-        $scope.closeAlert = function(index) {
-            $scope.alerts.splice(index, 1);
-        };
-
-        $scope.user = {
+        $scope.model = {
             email: null,
             password: null
         };
 
-        $scope.login = function(){
-            if($scope.loginForm.$valid){
-                $scope.myPromise = $http.post('/in', $scope.user).
+        $scope.submit = function(){
+            if($scope.form.$valid){
+                $scope.httpRequestPromise = $http.post('/in', $scope.model).
                     success(function(data) {
-
-						$log.log('data:',data);
-
                         if(data['status'] === 'success'){
                             window.location = "/";
                         }else{
                             $scope.alerts.push({ type: 'danger', msg: data.message });
                         }
-
                     }).
                     error(function() {
                         window.location = "/";
@@ -114,7 +110,7 @@ angular.module('forms',['ngMessages','cgBusy'])
             }
         };
 
-    }]);
+	}]);
 
 angular.module('filters',[])
     .filter('capitalize', function() {
