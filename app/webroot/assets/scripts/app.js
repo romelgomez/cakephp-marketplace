@@ -112,6 +112,53 @@ angular.module('forms',['ngMessages','cgBusy'])
 
 	}]);
 
+//https://angular-ui.github.io/bootstrap/#/modal
+angular.module('modalDemo',[])
+    .controller('ModalDemoCtrl', function ($scope, $modal, $log) {
+
+        $scope.items = ['item1', 'item2', 'item3'];
+
+        $scope.open = function (size) {
+            var modalInstance = $modal.open({
+                templateUrl: 'myModalContent.html',
+                controller: 'ModalInstanceCtrl',
+                size: size,
+                resolve: {
+                    items: function () {
+                        return $scope.items;
+                    }
+                }
+            });
+
+            var success = function (selectedItem) {
+                $scope.selected = selectedItem;
+            };
+
+            var error = function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            };
+
+            modalInstance.result.then(success,error);
+        };
+
+    })
+    .controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
+
+        $scope.items = items;
+        $scope.selected = {
+            item: $scope.items[0]
+        };
+
+        $scope.ok = function () {
+            $modalInstance.close($scope.selected.item);
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+
+    });
+
 angular.module('filters',[])
     .filter('capitalize', function() {
         return function(input) {
@@ -119,4 +166,4 @@ angular.module('filters',[])
         };
     });
 
-angular.module('app',['ui.bootstrap','forms']);
+angular.module('app',['ui.bootstrap','forms','modalDemo']);
