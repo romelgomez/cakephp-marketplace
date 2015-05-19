@@ -58,8 +58,8 @@
 
 						</div>
 						<div class="panel-footer">
-							<button id="new-user" type="button" class="btn btn-link">New User?</button>
-							<button id="recover" type="button" class="btn btn-link">Forgot your password?</button>
+							<button ng-click="newUser()" type="button" class="btn btn-link">New User?</button>
+							<button ng-click="recoverAccount()" type="button" class="btn btn-link">Forgot your password?</button>
 						</div>
 					</div>
 
@@ -198,27 +198,67 @@
 	</div>
 </section>
 
-<div ng-controller="ModalDemoCtrl">
-    <script type="text/ng-template" id="myModalContent.html">
-        <div class="modal-header">
-            <h3 class="modal-title">I'm a modal!</h3>
-        </div>
-        <div class="modal-body">
-            <ul>
-                <li ng-repeat="item in items">
-                    <a ng-click="selected.item = item">{{ item }}</a>
-                </li>
-            </ul>
-            Selected: <b>{{ selected.item }}</b>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
-    </script>
+<!--<div ng-controller="ModalDemoCtrl">-->
+<!--    <script type="text/ng-template" id="myModalContent.html">-->
+<!--        <div class="modal-header">-->
+<!--            <h3 class="modal-title">I'm a modal!</h3>-->
+<!--        </div>-->
+<!--        <div class="modal-body">-->
+<!---->
+<!--            <ul>-->
+<!--                <li ng-repeat="user in users">-->
+<!--                    <ul>-->
+<!--                        <li>Name: {{user.name}}</li>-->
+<!--                        <li>LastName {{user.lastName}}</li>-->
+<!--                    </ul>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!---->
+<!--            <ul>-->
+<!--                <li ng-repeat="item in items">-->
+<!--                    <a ng-click="selected.item = item">{{ item }}</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--            Selected: <b>{{ selected.item }}</b>-->
+<!--        </div>-->
+<!--        <div class="modal-footer">-->
+<!--            <button class="btn btn-primary" ng-click="ok()">OK</button>-->
+<!--            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>-->
+<!--        </div>-->
+<!--    </script>-->
+<!---->
+<!--    <button class="btn btn-default" ng-click="open()">Open me!</button>-->
+<!--    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>-->
+<!--    <button class="btn btn-default" ng-click="open('sm')">Small modal</button>-->
+<!--    <div ng-show="selected">Selection from a modal: {{ selected }}</div>-->
+<!--</div>-->
 
-    <button class="btn btn-default" ng-click="open()">Open me!</button>
-    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
-    <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
-    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
-</div>
+<script type="text/ng-template" id="recoverAccountModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Forgot your password?</h3>
+    </div>
+    <div class="modal-body">
+
+        <p>form</p>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">recover my account</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="newUserModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">New user</h3>
+    </div>
+    <div class="modal-body">
+
+        <p>form</p>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">Send</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

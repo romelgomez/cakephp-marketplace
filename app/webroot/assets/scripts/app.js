@@ -87,7 +87,7 @@ angular.module('forms',['ngMessages','cgBusy'])
 			$scope.alerts.splice(index, 1);
 		};
 	}])
-    .controller('LoginFormController',['$scope','$http','$log',function($scope,$http,$log) {
+    .controller('LoginFormController',['$scope','$http','$modal','$log',function($scope,$http,$modal,$log) {
 
         $scope.model = {
             email: null,
@@ -110,54 +110,130 @@ angular.module('forms',['ngMessages','cgBusy'])
             }
         };
 
-	}]);
 
-//https://angular-ui.github.io/bootstrap/#/modal
-angular.module('modalDemo',[])
-    .controller('ModalDemoCtrl', function ($scope, $modal, $log) {
-
-        $scope.items = ['item1', 'item2', 'item3'];
-
-        $scope.open = function (size) {
+        $scope.recoverAccount = function (size) {
             var modalInstance = $modal.open({
-                templateUrl: 'myModalContent.html',
-                controller: 'ModalInstanceCtrl',
-                size: size,
-                resolve: {
-                    items: function () {
-                        return $scope.items;
-                    }
-                }
+                templateUrl: 'recoverAccountModal.html',
+                controller: 'RecoverAccountController',
+                size: size
             });
 
-            var success = function (selectedItem) {
-                $scope.selected = selectedItem;
+            var success = function (message) {
+                $log.log('success message: ',message)
             };
 
-            var error = function () {
-                $log.info('Modal dismissed at: ' + new Date());
+            var error = function (reason) {
+                $log.info('error reason: ' + reason);
             };
 
             modalInstance.result.then(success,error);
         };
 
-    })
-    .controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
+        $scope.newUser = function (size) {
+            var modalInstance = $modal.open({
+                templateUrl: 'newUserModal.html',
+                controller: 'NewUserController',
+                size: size
+            });
 
-        $scope.items = items;
-        $scope.selected = {
-            item: $scope.items[0]
+            var success = function (message) {
+                $log.log('success message: ',message)
+            };
+
+            var error = function (reason) {
+                $log.info('error reason: ' + reason);
+            };
+
+            modalInstance.result.then(success,error);
         };
 
+
+	}])
+    .controller('RecoverAccountController',['$scope','$modalInstance',function($scope,$modalInstance){
         $scope.ok = function () {
-            $modalInstance.close($scope.selected.item);
+            $modalInstance.close('it ok');
         };
 
         $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
+            $modalInstance.dismiss('cancel the form recover Account');
+        };
+    }])
+    .controller('NewUserController',['$scope','$modalInstance',function($scope,$modalInstance){
+        $scope.ok = function () {
+            $modalInstance.close('it ok');
         };
 
-    });
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel the form newUser');
+        };
+    }]);
+
+//https://angular-ui.github.io/bootstrap/#/modal
+//angular.module('modalDemo',[])
+//    .controller('ModalDemoCtrl', function ($scope, $modal, $log) {
+//
+//        $scope.items = ['item1', 'item2', 'item3'];
+//        $scope.users = [
+//            {
+//                name:'romel',
+//                lastName:'Gomez'
+//            },
+//            {
+//                name:'Dilia',
+//                lastName:'Gomez'
+//            },
+//            {
+//                name:'Rudy',
+//                lastName:'Gomez'
+//            }
+//        ];
+//
+//        $scope.open = function (size) {
+//            var modalInstance = $modal.open({
+//                templateUrl: 'myModalContent.html',
+//                controller: 'ModalInstanceCtrl',
+//                size: size,
+//                resolve: {
+//                    items: function () {
+//                        return $scope.items;
+//                    },
+//                    users: function () {
+//                        return $scope.users
+//                    }
+//                }
+//            });
+//
+//            var success = function (selectedItem) {
+//                $scope.selected = selectedItem;
+//            };
+//
+//            var error = function (reason) {
+//                $log.info('reason: ' + reason);
+//                $log.info('Modal dismissed at: ' + new Date());
+//            };
+//
+//            modalInstance.result.then(success,error);
+//        };
+//
+//    })
+//    .controller('ModalInstanceCtrl', function ($scope, $modalInstance, items, users) {
+//
+//        $scope.items = items;
+////        $scope.users = users;
+//
+//        $scope.selected = {
+//            item: $scope.items[0]
+//        };
+//
+//        $scope.ok = function () {
+//            $modalInstance.close($scope.selected.item);
+//        };
+//
+//        $scope.cancel = function () {
+//            $modalInstance.dismiss('cancel');
+//        };
+//
+//    });
 
 angular.module('filters',[])
     .filter('capitalize', function() {
@@ -166,4 +242,4 @@ angular.module('filters',[])
         };
     });
 
-angular.module('app',['ui.bootstrap','forms','modalDemo']);
+angular.module('app',['ui.bootstrap','forms']);
