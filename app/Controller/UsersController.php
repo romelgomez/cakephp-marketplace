@@ -74,35 +74,35 @@ class UsersController extends AppController{
 
 		$messages = array(
 			'alreadyVerified'=>array(
-				'us_EN'=>'',
-				'es_VE'=>''
+				'us_EN'=>'This account is already verified.',
+				'es_VE'=>'Esta cuenta ya esta verificada.'
 			),
 			'banned'=>array(
 				'us_EN'=>'This account was banned.',
-				'es_VE'=>'Esta cuenta fue prohibida.'
+				'es_VE'=>'Esta cuenta fue inhabilitada.'
 			),
 			'cannotSetNewParameters'=>array(
-				'us_EN'=>'',
-				'es_VE'=>''
+				'us_EN'=>'An unexpected error occurred.',
+				'es_VE'=>'Ocurrió un error inesperado.'
 			),
 			'cannotSaveNewUser'=>array(
-				'us_EN'=>'',
-				'es_VE'=>''
+				'us_EN'=>'An unexpected error occurred.',
+				'es_VE'=>'Ocurrió un error inesperado.'
 			),
 			'cannotSetNewPassword'=>array(
-				'us_EN'=>'',
-				'es_VE'=>''
+				'us_EN'=>'An unexpected error occurred.',
+				'es_VE'=>'Ocurrió un error inesperado.'
 			),
 			'emailNotVerified'=>array(
 				'us_EN'=>'The email is not verified.',
 				'es_VE'=>'El correo electrónico no se ha verificado.'
 			),
 			'emailNotSend'=>array(
-				'us_EN'=>'',
-				'es_VE'=>''
+				'us_EN'=>'An unexpected error occurred.',
+				'es_VE'=>'Ocurrió un error inesperado.'
 			),
 			'invalidData'=>array(
-				'us_EN'=>'',
+				'us_EN'=>'Invalid request.',
 				'es_VE'=>''
 			),
 			'passwordDoesNotMatch'=>array(
@@ -114,8 +114,8 @@ class UsersController extends AppController{
 				'es_VE'=>''
 			),
 			'suspended'=>array(
-				'us_EN'=>'Esta cuenta fue suspendida.',
-				'es_VE'=>''
+				'us_EN'=>'This account was suspended.',
+				'es_VE'=>'Esta cuenta fue suspendida.'
 			),
 			'theLinkIsInvalid'=>array(
 				'us_EN'=>'',
@@ -126,8 +126,8 @@ class UsersController extends AppController{
 				'es_VE'=>''
 			),
 			'userAlreadyExist'=>array(
-				'us_EN'=>'',
-				'es_VE'=>''
+				'us_EN'=>'The user already exist.',
+				'es_VE'=>'El usuario ya existe.'
 			),
 			'userNotExist'=>array(
 				'us_EN'=>'This email does not exist in our database.',
@@ -383,8 +383,9 @@ class UsersController extends AppController{
 					'User'=>Array
 					(
 						'name'					=>	$request['name'],
+						'lastName'	            =>	$request['lastName'],
 						'email'					=>	$request['email'],
-						'email_verified'		=>	0,
+						'email_verified'		=>	1,                      // in production set to 0
 						'password'				=>	$passwordHash,
 						'temp_password'			=>	$privateKeyHash,
 						'banned'				=>	0,
@@ -392,33 +393,42 @@ class UsersController extends AppController{
 				);
 
 				if($this->{'User'}->save($data)){
-					$userData = $this->{'User'}->read();
 
-					$Email = new CakeEmail('default');
-					$Email->template('verifyEmail', 'verifyEmail');
-					$Email->viewVars(array('userId' => $userData['User']['id'],'publicKey'=>$publicKey));
-					$Email->emailFormat('both');
-					$Email->from(array('support@mystock.la' => 'MyStock.LA'));
-					$Email->to($userData['User']['email']);
-					$Email->subject('MyStock.LA - Verify your email address');
+                    // In production uncomment the following code ==> START
+//                    $userData = $this->{'User'}->read();
+//					$Email = new CakeEmail('default');
+//					$Email->template('verifyEmail', 'verifyEmail');
+//					$Email->viewVars(array('userId' => $userData['User']['id'],'publicKey'=>$publicKey));
+//					$Email->emailFormat('both');
+//					$Email->from(array('support@marketplace.com' => 'marketplace.com'));
+//					$Email->to($userData['User']['email']);
+//					$Email->subject('marketplace.com - Verify your email address');
+//
+//					if ($Email->send()) {
+//						$return['status'] = 'success';
+//					}else{
+//                        $return['status']       = 'error';
+//                        $return['message'] 		= $this->responseMessages('emailNotSend','es_VE');
+//                        $return['messageType'] 	= 'emailNotSend';
+//					}
+                    // ==> END
 
-					if ($Email->send()) {
-						$return['status'] = 'success';
-					}else{
-						$return['status'] = 'error';
-						$return['message'] = 'email-not-send';
-					}
-				}else{
-					$return['status'] = 'error';
-					$return['message'] = 'cannot-save-new-user';
+                    $return['status'] = 'success';
+
+                }else{
+                    $return['status']       = 'error';
+                    $return['message'] 		= $this->responseMessages('cannotSaveNewUser','es_VE');
+                    $return['messageType'] 	= 'cannotSaveNewUser';
 				}
 			}else{
-				$return['status'] = 'error';
-				$return['message'] = 'user-already-exist';
+                $return['status']       = 'error';
+                $return['message'] 		= $this->responseMessages('userAlreadyExist','es_VE');
+                $return['messageType'] 	= 'userAlreadyExist';
             }
         }else{
-			$return['status'] = 'error';
-			$return['message'] = 'invalid-data';
+            $return['status']       = 'error';
+            $return['message'] 		= $this->responseMessages('invalidData','es_VE');
+            $return['messageType'] 	= 'invalidData';
         }
 
         $this->{'set'}('return',$return);

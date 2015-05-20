@@ -74,7 +74,7 @@
     <div class="modal-header">
         <h3 class="modal-title">Nuevo usuario</h3>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" cg-busy="{promise:httpRequestPromise,message:'Loading'}">
 
         <form id="form" name="form" novalidate="" ng-submit="submit()">
 

@@ -72,7 +72,7 @@ angular.module('httpDelay',[])
     }]);
 
 angular.module('forms',['ngMessages','cgBusy','jlareau.pnotify'])
-	.controller('FormsController',['$scope','$modal','$log',function($scope,$modal,$log){
+	.controller('FormsController',['$scope','$modal',function($scope,$modal){
         $scope.recoverAccount = function (size) {
             $modal.open({
                 templateUrl: 'recoverAccountModal.html',
@@ -121,7 +121,7 @@ angular.module('forms',['ngMessages','cgBusy','jlareau.pnotify'])
 //            $modalInstance.dismiss('cancel the form recover Account');
 //        };
     }])
-    .controller('NewUserController',['$scope','$modalInstance','notificationService',function($scope,$modalInstance,notificationService){
+    .controller('NewUserController',['$scope','$http','$modalInstance','notificationService',function($scope,$http,$modalInstance,notificationService){
 
         $scope.model = {
             name: null,
@@ -133,94 +133,26 @@ angular.module('forms',['ngMessages','cgBusy','jlareau.pnotify'])
 
         $scope.submit = function () {
             if($scope.form.$valid){
-//                $scope.httpRequestPromise = $http.post('/in', $scope.model).
-//                    success(function(data) {
-//                        if(data['status'] === 'success'){
-//                            window.location = "/";
-//                        }else{
-//                            notificationService.error(data.message);
-//                        }
-//                    }).
-//                    error(function() {
-//                        window.location = "/";
-//                    });
+                $scope.httpRequestPromise = $http.post('/new-user', $scope.model).
+                    success(function(data) {
+                        if(data['status'] === 'success'){
+                            notificationService.success('Casi listo, le hemos enviado un correo para verificar y activar su cuenta.');
+                            $modalInstance.close();
+                        }else{
+                            notificationService.error(data.message);
+                        }
+                    }).
+                    error(function() {
+                        window.location = "/";
+                    });
             }
-
-            //  $modalInstance.close('it ok');
-
         };
-//
+
         $scope.cancel = function () {
             $modalInstance.dismiss();
         };
-    }]);
 
-//https://angular-ui.github.io/bootstrap/#/modal
-//angular.module('modalDemo',[])
-//    .controller('ModalDemoCtrl', function ($scope, $modal, $log) {
-//
-//        $scope.items = ['item1', 'item2', 'item3'];
-//        $scope.users = [
-//            {
-//                name:'romel',
-//                lastName:'Gomez'
-//            },
-//            {
-//                name:'Dilia',
-//                lastName:'Gomez'
-//            },
-//            {
-//                name:'Rudy',
-//                lastName:'Gomez'
-//            }
-//        ];
-//
-//        $scope.open = function (size) {
-//            var modalInstance = $modal.open({
-//                templateUrl: 'myModalContent.html',
-//                controller: 'ModalInstanceCtrl',
-//                size: size,
-//                resolve: {
-//                    items: function () {
-//                        return $scope.items;
-//                    },
-//                    users: function () {
-//                        return $scope.users
-//                    }
-//                }
-//            });
-//
-//            var success = function (selectedItem) {
-//                $scope.selected = selectedItem;
-//            };
-//
-//            var error = function (reason) {
-//                $log.info('reason: ' + reason);
-//                $log.info('Modal dismissed at: ' + new Date());
-//            };
-//
-//            modalInstance.result.then(success,error);
-//        };
-//
-//    })
-//    .controller('ModalInstanceCtrl', function ($scope, $modalInstance, items, users) {
-//
-//        $scope.items = items;
-////        $scope.users = users;
-//
-//        $scope.selected = {
-//            item: $scope.items[0]
-//        };
-//
-//        $scope.ok = function () {
-//            $modalInstance.close($scope.selected.item);
-//        };
-//
-//        $scope.cancel = function () {
-//            $modalInstance.dismiss('cancel');
-//        };
-//
-//    });
+    }]);
 
 angular.module('filters',[])
     .filter('capitalize', function() {
