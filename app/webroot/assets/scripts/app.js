@@ -71,23 +71,24 @@ angular.module('httpDelay',[])
 
     }]);
 
-angular.module('forms',['ngMessages','cgBusy'])
-	.controller('FormsController',['$scope',function($scope){
-		$scope.sizeOf = function(obj) {
-			var len = 0, key;
-			for (key in obj) {
-				if (obj.hasOwnProperty(key)) len++;
-			}
-			return len;
-		};
-
-		$scope.alerts = [];
-
-		$scope.closeAlert = function(index) {
-			$scope.alerts.splice(index, 1);
-		};
-	}])
-    .controller('LoginFormController',['$scope','$http','$modal','$log',function($scope,$http,$modal,$log) {
+angular.module('forms',['ngMessages','cgBusy','jlareau.pnotify'])
+	.controller('FormsController',['$scope','$modal','$log',function($scope,$modal,$log){
+        $scope.recoverAccount = function (size) {
+            $modal.open({
+                templateUrl: 'recoverAccountModal.html',
+                controller: 'RecoverAccountController',
+                size: size
+            });
+        };
+        $scope.newUser = function (size) {
+            $modal.open({
+                templateUrl: 'newUserModal.html',
+                controller: 'NewUserController',
+                size: size
+            });
+        };
+    }])
+    .controller('LoginFormController',['$scope','$http','notificationService',function($scope,$http,notificationService) {
 
         $scope.model = {
             email: null,
@@ -101,7 +102,7 @@ angular.module('forms',['ngMessages','cgBusy'])
                         if(data['status'] === 'success'){
                             window.location = "/";
                         }else{
-                            $scope.alerts.push({ type: 'danger', msg: data.message });
+                            notificationService.error(data.message);
                         }
                     }).
                     error(function() {
@@ -110,61 +111,47 @@ angular.module('forms',['ngMessages','cgBusy'])
             }
         };
 
-
-        $scope.recoverAccount = function (size) {
-            var modalInstance = $modal.open({
-                templateUrl: 'recoverAccountModal.html',
-                controller: 'RecoverAccountController',
-                size: size
-            });
-
-            var success = function (message) {
-                $log.log('success message: ',message)
-            };
-
-            var error = function (reason) {
-                $log.info('error reason: ' + reason);
-            };
-
-            modalInstance.result.then(success,error);
-        };
-
-        $scope.newUser = function (size) {
-            var modalInstance = $modal.open({
-                templateUrl: 'newUserModal.html',
-                controller: 'NewUserController',
-                size: size
-            });
-
-            var success = function (message) {
-                $log.log('success message: ',message)
-            };
-
-            var error = function (reason) {
-                $log.info('error reason: ' + reason);
-            };
-
-            modalInstance.result.then(success,error);
-        };
-
-
 	}])
     .controller('RecoverAccountController',['$scope','$modalInstance',function($scope,$modalInstance){
-        $scope.ok = function () {
-            $modalInstance.close('it ok');
-        };
-
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel the form recover Account');
-        };
+//        $scope.ok = function () {
+//            $modalInstance.close('it ok');
+//        };
+//
+//        $scope.cancel = function () {
+//            $modalInstance.dismiss('cancel the form recover Account');
+//        };
     }])
-    .controller('NewUserController',['$scope','$modalInstance',function($scope,$modalInstance){
-        $scope.ok = function () {
-            $modalInstance.close('it ok');
+    .controller('NewUserController',['$scope','$modalInstance','notificationService',function($scope,$modalInstance,notificationService){
+
+        $scope.model = {
+            name: null,
+            email: null,
+            lastName: null,
+            password: null,
+            termsOfService: false
         };
 
+        $scope.submit = function () {
+            if($scope.form.$valid){
+//                $scope.httpRequestPromise = $http.post('/in', $scope.model).
+//                    success(function(data) {
+//                        if(data['status'] === 'success'){
+//                            window.location = "/";
+//                        }else{
+//                            notificationService.error(data.message);
+//                        }
+//                    }).
+//                    error(function() {
+//                        window.location = "/";
+//                    });
+            }
+
+            //  $modalInstance.close('it ok');
+
+        };
+//
         $scope.cancel = function () {
-            $modalInstance.dismiss('cancel the form newUser');
+            $modalInstance.dismiss();
         };
     }]);
 

@@ -208,8 +208,9 @@ a:hover{
     font-size: 50px;
 }
 
-.navbar
-
+.help-block{
+    color: #a94442;
+}
 
 @media print
 {
