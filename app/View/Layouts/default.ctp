@@ -36,6 +36,7 @@ array_push($scripts,'/bower_components/pnotify/pnotify.core.js');
 array_push($scripts,'/bower_components/angular/angular.js');
 array_push($scripts,'/bower_components/angular-busy/dist/angular-busy.js');
 array_push($scripts,'/bower_components/angular-pnotify/src/angular-pnotify.js');
+array_push($scripts,'/bower_components/angular-validation-match/dist/angular-input-match.js');
 array_push($scripts,'/bower_components/angular-bootstrap/ui-bootstrap.js');
 array_push($scripts,'/bower_components/angular-bootstrap/ui-bootstrap-tpls.js');
 array_push($scripts,'/bower_components/angular-messages/angular-messages.js');

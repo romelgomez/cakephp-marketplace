@@ -131,7 +131,7 @@ class UsersController extends AppController{
 			),
 			'userNotExist'=>array(
 				'us_EN'=>'This email does not exist in our database.',
-				'es_VE'=>'Esta dirección de correo electrónico no existe en nuestra base de datos.'
+				'es_VE'=>'No hay nadie asociado con tal correo electrónico. Por favor verifique e inténtelo de nuevo.'
 			),
 			'unexpectedError'=>array(
 				'us_EN'=>'An unexpected error occurred.',
@@ -254,22 +254,24 @@ class UsersController extends AppController{
 					if($this->{'User'}->save($data)){
 						$return['status'] = 'success';
 					}else{
-						$return['status'] = 'error';
-						$return['message'] = 'cannot-set-new-parameters';
+                        $return['status']  = 'error';
+                        $return['message'] = 'cannotSetNewParameters';
+                        $return['message'] = $this->responseMessages('cannotSetNewParameters','es_VE');
 					}
-
 				}else{
-					$return['status'] = 'error';
-					$return['message'] = 'this-link-is-invalid';
+					$return['status']   = 'error';
+					$return['message']  = 'theLinkIsInvalid';
+                    $return['message'] 	= $this->responseMessages('theLinkIsInvalid','es_VE');
 				}
-
 			}else{
-				$return['status'] = 'error';
-				$return['message'] = 'already-verified';
+                $return['status']       = 'error';
+                $return['message'] 		= $this->responseMessages('alreadyVerified','es_VE');
+                $return['messageType'] 	= 'alreadyVerified';
 			}
 		}else{
-			$return['status'] = 'error';
-			$return['message'] = 'user-not-exist';
+            $return['status']       = 'error';
+            $return['message'] 		= $this->responseMessages('userNotExist','es_VE');
+            $return['messageType'] 	= 'userNotExist';
 		}
 
 		$this->{'set'}('data',$return);
@@ -314,33 +316,41 @@ class UsersController extends AppController{
 				);
 
 				if($this->{'User'}->save($data)){
-					$userData = $this->{'User'}->read();
 
-					$Email = new CakeEmail('default');
-					$Email->template('verifyEmail', 'verifyEmail');
-					$Email->viewVars(array('userId' => $userData['User']['id'],'publicKey'=>$publicKey));
-					$Email->emailFormat('both');
-					$Email->from(array('support@mystock.la' => 'MyStock.LA'));
-					$Email->to($userData['User']['email']);
-					$Email->subject('MyStock.LA - Verify your email address');
+                    // In production uncomment the following code ==> START
+//					$userData = $this->{'User'}->read();
+//					$Email = new CakeEmail('default');
+//					$Email->template('verifyEmail', 'verifyEmail');
+//					$Email->viewVars(array('userId' => $userData['User']['id'],'publicKey'=>$publicKey));
+//					$Email->emailFormat('both');
+//					$Email->from(array('support@mystock.la' => 'MyStock.LA'));
+//					$Email->to($userData['User']['email']);
+//					$Email->subject('MyStock.LA - Verify your email address');
+//
+//					if ($Email->send()) {
+//						$return['status'] = 'success';
+//					}else{
+//						$return['status'] = 'error';
+//						$return['message'] = 'email-not-send';
+//					}
+                    // ==> END
 
-					if ($Email->send()) {
-						$return['status'] = 'success';
-					}else{
-						$return['status'] = 'error';
-						$return['message'] = 'email-not-send';
-					}
+                    $return['status'] = 'success';
+
 				}else{
-					$return['status'] = 'error';
-					$return['message'] = 'cannot-set-new-parameters';
+                    $return['status']       = 'error';
+                    $return['message'] 		= $this->responseMessages('cannotSetNewParameters','es_VE');
+                    $return['messageType'] 	= 'cannotSetNewParameters';
 				}
 			}else{
-				$return['status'] = 'error';
-				$return['message'] = 'already-verified';
+                $return['status']       = 'error';
+                $return['message'] 		= $this->responseMessages('alreadyVerified','es_VE');
+                $return['messageType'] 	= 'alreadyVerified';
 			}
 		}else{
-			$return['status'] = 'error';
-			$return['message'] = 'user-not-exist';
+            $return['status']       = 'error';
+            $return['message'] 		= $this->responseMessages('userNotExist','es_VE');
+            $return['messageType'] 	= 'userNotExist';
 		}
 
 	}
@@ -521,35 +531,41 @@ class UsersController extends AppController{
 				);
 
 				if($this->{'User'}->save($data)){
-					$userData = $this->{'User'}->read();
-
+                    // In production uncomment the following code ==> START
 					// Send email to notify what the password has been changed
+//                    $userData = $this->{'User'}->read();
+//					$Email = new CakeEmail('default');
+//					$Email->template('passwordHasBeenChanged', 'passwordHasBeenChanged');
+////					$Email->viewVars(array('userId' => $userData['User']['id'],'publicKey'=>$publicKey));
+//					$Email->emailFormat('both');
+//					$Email->from(array('support@mystock.la' => 'MyStock.LA'));
+//					$Email->to($userData['User']['email']);
+//					$Email->subject('MyStock.LA - You password has been changed');
+////
+//					if ($Email->send()) {
+//						$return['status'] = 'success';
+//					}else{
+//						$return['status'] = 'error';
+//						$return['message'] = 'email-not-send';
+//					}
+                    // ==> END
 
-					$Email = new CakeEmail('default');
-					$Email->template('passwordHasBeenChanged', 'passwordHasBeenChanged');
-//					$Email->viewVars(array('userId' => $userData['User']['id'],'publicKey'=>$publicKey));
-					$Email->emailFormat('both');
-					$Email->from(array('support@mystock.la' => 'MyStock.LA'));
-					$Email->to($userData['User']['email']);
-					$Email->subject('MyStock.LA - You password has been changed');
-//
-					if ($Email->send()) {
-						$return['status'] = 'success';
-					}else{
-						$return['status'] = 'error';
-						$return['message'] = 'email-not-send';
-					}
-				}else{
-					$return['status'] = 'error';
-					$return['message'] = 'cannot-set-new-password';
+                    $return['status'] = 'success';
+
+                }else{
+                    $return['status']       = 'error';
+                    $return['message'] 		= $this->responseMessages('cannotSetNewPassword','es_VE');
+                    $return['messageType'] 	= 'cannotSetNewPassword';
 				}
 			}else{
-				$return['status'] 	= 'error';
-				$return['message']	= 'the-key-is-invalid';
+				$return['status'] 	    = 'error';
+                $return['message'] 		= $this->responseMessages('theKeyIsInvalid','es_VE');
+                $return['messageType'] 	= 'theKeyIsInvalid';
 			}
 		}else{
-			$return['status'] = 'error';
-			$return['message'] = 'user-not-exist';
+            $return['status'] 	    = 'error';
+            $return['message'] 		= $this->responseMessages('userNotExist','es_VE');
+            $return['messageType'] 	= 'userNotExist';
 		}
 
 		$this->{'set'}('return',$return);
@@ -580,21 +596,20 @@ class UsersController extends AppController{
 		// checks that the user exist
 		if($user){
 			$tempPasswordHash = Security::hash($request['key'], 'blowfish', $user['User']['temp_password']);
-
 			if($tempPasswordHash===$user['User']['temp_password']){
 				$return['status'] 	= 'success';
 				$return['message']	= 'request-accepted';
-
-				$return['id']  = $request['id'];
-				$return['key'] = $request['key'];
-
+				$return['id']       = $request['id'];
+				$return['key']      = $request['key'];
 			}else{
-				$return['status'] 	= 'error';
-				$return['message']	= 'this-link-is-invalid';
+                $return['status'] 	    = 'error';
+                $return['message'] 		= $this->responseMessages('theLinkIsInvalid','es_VE');
+                $return['messageType'] 	= 'theLinkIsInvalid';
 			}
 		}else{
-			$return['status'] = 'error';
-			$return['message'] = 'user-not-exist';
+            $return['status'] 	    = 'error';
+            $return['message'] 		= $this->responseMessages('userNotExist','es_VE');
+            $return['messageType'] 	= 'userNotExist';
 		}
 
 		$this->{'set'}('data',$return);
@@ -644,35 +659,46 @@ class UsersController extends AppController{
 
 					if($this->{'User'}->save($data)){
 
-						$Email = new CakeEmail('default');
-						$Email->template('newPasswordRequest', 'newPasswordRequest');
-						$Email->viewVars(array('userId' => $user['User']['id'],'publicKey'=>$publicKey));
-						$Email->emailFormat('both');
-						$Email->from(array('support@mystock.la' => 'MyStock.LA'));
-						$Email->to($user['User']['email']);
-						$Email->subject('MyStock.LA - Set new password');
+                        // In production uncomment the following code ==> START
+//                        $Email = new CakeEmail('default');
+//						$Email->template('newPasswordRequest', 'newPasswordRequest');
+//						$Email->viewVars(array('userId' => $user['User']['id'],'publicKey'=>$publicKey));
+//						$Email->emailFormat('both');
+//						$Email->from(array('support@marketplace.com' => 'MarketPlace.com'));
+//						$Email->to($user['User']['email']);
+//						$Email->subject('MarketPlace.com - Set new password');
+//
+//						if ($Email->send()) {
+//							$return['status'] = 'success';
+//						}else{
+//                            $return['status']       = 'error';
+//                            $return['message'] 		= $this->responseMessages('emailNotSend','es_VE');
+//                            $return['messageType'] 	= 'emailNotSend';
+//						}
+                        // ==> END
 
-						if ($Email->send()) {
-							$return['status'] = 'success';
-						}else{
-							$return['status'] = 'error';
-							$return['message'] = 'email-not-send';
-						}
-					}else{
-						$return['status'] = 'error';
-						$return['message'] = 'cannot-set-new-parameters';
+                        $return['status'] = 'success';
+
+
+                    }else{
+                        $return['status']       = 'error';
+                        $return['message'] 		= $this->responseMessages('cannotSetNewParameters','es_VE');
+                        $return['messageType'] 	= 'cannotSetNewParameters';
 					}
 				}else{
-					$return['status'] = 'error';
-					$return['message'] = 'suspended';
+                    $return['status']       = 'error';
+                    $return['message'] 		= $this->responseMessages('suspended','es_VE');
+                    $return['messageType'] 	= 'suspended';
 				}
 			}else{
-				$return['status'] = 'error';
-				$return['message'] = 'banned';
+                $return['status']       = 'error';
+                $return['message'] 		= $this->responseMessages('banned','es_VE');
+                $return['messageType'] 	= 'banned';
 			}
 		}else{
-			$return['status'] = 'error';
-			$return['message'] = 'user-not-exist';
+            $return['status']       = 'error';
+            $return['message'] 		= $this->responseMessages('userNotExist','es_VE');
+            $return['messageType'] 	= 'userNotExist';
 		}
 
         $this->{'set'}('return',$return);

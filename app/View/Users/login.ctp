@@ -7,7 +7,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Ingrese su email y contraseña para iniciar la sesión</h3>
                     </div>
-                    <div class="panel-body" ng-controller="LoginFormController" cg-busy="{promise:httpRequestPromise,message:'Loading'}">
+                    <div class="panel-body" ng-controller="LoginFormController" cg-busy="{promise:httpRequestPromise,message:'Un momento'}">
 
                         <form name="form" novalidate="" ng-submit="submit()">
 
@@ -57,16 +57,63 @@
 
 <script type="text/ng-template" id="recoverAccountModal.html">
     <div class="modal-header">
-        <h3 class="modal-title">Forgot your password?</h3>
+        <h3 class="modal-title">Olvido su contraseña?</h3>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" cg-busy="{promise:httpRequestPromise,message:'Un momento'}">
 
-        <p>form</p>
+        <form id="form" name="form" novalidate="" ng-submit="submit()">
+
+            <div class="form-group">
+                <label>Email o dirección de correo electrónico</label>
+                <input type="email" name="email" ng-model="model.email" required class="form-control" placeholder="Ingrese su correo o email"  >
+                <div data-ng-messages="form.$submitted && form.email.$error" class="help-block">
+                    <div data-ng-message="email">
+                        - La <b>dirección de correo electrónico</b> debe ser válida.
+                    </div>
+                    <div data-ng-message="required">
+                        - La <b>dirección de correo electrónico</b> es un requisito.
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <!--        <pre>{{form | json}}</pre>-->
 
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">recover my account</button>
         <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        <button form="form" class="btn btn-primary" type="submit">recuperar mi cuenta</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="verifyEmailModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Escriba su correo electrónico para verificar su cuenta</h3>
+    </div>
+    <div class="modal-body" cg-busy="{promise:httpRequestPromise,message:'Un momento'}">
+
+        <form id="form" name="form" novalidate="" ng-submit="submit()">
+
+            <div class="form-group">
+                <label>Email o dirección de correo electrónico</label>
+                <input type="email" name="email" ng-model="model.email" required class="form-control" placeholder="Ingrese su correo o email"  >
+                <div data-ng-messages="form.$submitted && form.email.$error" class="help-block">
+                    <div data-ng-message="email">
+                        - La <b>dirección de correo electrónico</b> debe ser válida.
+                    </div>
+                    <div data-ng-message="required">
+                        - La <b>dirección de correo electrónico</b> es un requisito.
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <!--        <pre>{{form | json}}</pre>-->
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        <button form="form" class="btn btn-primary" type="submit">recuperar mi cuenta</button>
     </div>
 </script>
 
@@ -74,7 +121,7 @@
     <div class="modal-header">
         <h3 class="modal-title">Nuevo usuario</h3>
     </div>
-    <div class="modal-body" cg-busy="{promise:httpRequestPromise,message:'Loading'}">
+    <div class="modal-body" cg-busy="{promise:httpRequestPromise,message:'Un momento'}">
 
         <form id="form" name="form" novalidate="" ng-submit="submit()">
 
@@ -103,7 +150,7 @@
                 <input type="email" name="email" ng-model="model.email" required class="form-control" placeholder="Ingrese su correo o email"  >
                 <div data-ng-messages="form.$submitted && form.email.$error" class="help-block">
                     <div data-ng-message="email">
-                        - La <b>dirección de correo electrónico</b> es un requisito.
+                        - La <b>dirección de correo electrónico</b> debe ser válida.
                     </div>
                     <div data-ng-message="required">
                         - La <b>dirección de correo electrónico</b> es un requisito.
