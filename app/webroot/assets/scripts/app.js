@@ -90,7 +90,7 @@ angular.module('forms',['ngMessages','cgBusy','jlareau.pnotify','validation.matc
         $scope.verifyEmail = function(size){
             $modal.open({
                 templateUrl: 'verifyEmailModal.html',
-                controller: 'verifyEmailController',
+                controller: 'VerifyEmailController',
                 size: size
             });
         };
@@ -209,7 +209,7 @@ angular.module('forms',['ngMessages','cgBusy','jlareau.pnotify','validation.matc
         };
 
     }])
-    .controller('verifyEmailController',['$scope','$http','$modalInstance','notificationService',function($scope,$http,$modalInstance,notificationService){
+    .controller('VerifyEmailController',['$scope','$http','$modalInstance','notificationService',function($scope,$http,$modalInstance,notificationService){
 
         $scope.model = {
             email: null
@@ -238,6 +238,99 @@ angular.module('forms',['ngMessages','cgBusy','jlareau.pnotify','validation.matc
 
     }]);
 
+angular.module('publications',[])
+    .factory('URL', function($location) {
+
+        var pathname 	= $location.absUrl();
+        var url 		= window.purl(pathname);
+        var segments	= url.attr('fragment');
+        var action   	= url.segment(1);
+        var userId   	= url.segment(2);
+
+        var url_obj         	= {};
+        url_obj['action']     	= action;
+        url_obj['user-id']     	= userId;
+        url_obj['search']      	= '';
+        url_obj['page']        	= '';
+        url_obj['order-by']    	= '';
+
+        if(segments != ''){
+            var split_segments = url.attr('fragment').split('/');
+            if(split_segments.length){
+                angular.forEach(split_segments, function(parameter, index) {
+                    if(parameter.indexOf("search-") !== -1){
+                        var search_string = utility.stringReplace(parameter,'search-','');
+
+                        /* La cadena search_string se manipula en el siguiente orden.
+                         *
+                         * 1) se reemplaza los caracteres especiales
+                         * 2) se elimina los espacios en blancos ante y después de la cadena
+                         * 3) se reemplaza los espacios en blancos largos por uno solo.
+                         *
+                         ********************************************************************/
+                        url_obj.search = search_string.replace(/[^a-zA-Z0-9]/g,' ').trim().replace(/\s{2,}/g, ' ');
+
+                        //console.log(url_obj.search);
+
+                    }
+                    if(parameter.indexOf("page-") !== -1){
+                        url_obj.page = parseInt(utility.stringReplace(parameter,'page-',''));
+                    }
+
+
+                    if(parameter == 'highest-price'){
+                        url_obj['order-by'] = "highest-price";
+                    }
+                    if(parameter == 'lowest-price'){
+                        url_obj['order-by'] = "lowest-price";
+                    }
+                    if(parameter == 'latest'){
+                        url_obj['order-by'] = "latest";
+                    }
+                    if(parameter == 'oldest'){
+                        url_obj['order-by'] = 'oldest';
+                    }
+                    if(parameter == 'higher-availability'){
+                        url_obj['order-by'] = 'higher-availability';
+                    }
+                    if(parameter == 'lower-availability'){
+                        url_obj['order-by'] = 'lower-availability';
+                    }
+                });
+            }
+        }
+
+        return {
+            obj: url_obj
+        };
+    })
+    .controller('PublicationsController',['$scope','$http','notificationService','$location','URL','$log',function($scope,$http,notificationService,$location,URL,$log){
+
+//        $log.log('URL.obj',URL.obj);
+
+        var lastResponseData = {};
+
+        $scope.model = URL.obj;
+
+        $scope.httpRequestPromise = $http.post('/products', $scope.model).
+            success(function(data) {
+                // Si la sesión ha expirado
+                if(data['expired_session']){
+                    window.location = "/login";
+                }
+                if(data['status'] === 'success'){
+                    lastResponseData = data;
+//                    process();
+                }else{
+                    window.location = "/";
+                }
+            }).
+            error(function() {
+                window.location = "/";
+            });
+
+    }]);
+
 angular.module('filters',[])
     .filter('capitalize', function() {
         return function(input) {
@@ -245,4 +338,4 @@ angular.module('filters',[])
         };
     });
 
-angular.module('app',['ui.bootstrap','forms']);
+angular.module('app',['ui.bootstrap','forms','publications']);
