@@ -212,6 +212,14 @@ a:hover{
     color: #a94442;
 }
 
+.publication{
+    padding: 10px;
+    border-radius: 4px;
+    color:white;
+    background-color: #222;
+    background: url(/resources/app/img/escheresque_ste.png);
+}
+
 @media print
 {
     .non-printable { display: none; }

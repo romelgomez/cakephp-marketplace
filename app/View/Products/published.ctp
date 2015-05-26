@@ -1,11 +1,22 @@
+<script type="text/ng-template" id="published.html">
+<span>base</span>
+</script>
+
 <section ng-controller="PublicationsController">
-    PublicationsController
+
+<!--    <pre>{{publications['data']['products'] | json}}</pre>-->
+<!--    <pre>{{publications | json}}</pre>-->
+
+
+    <published data="{{publications['data']['products']}}"></published>
+
+
 </section>
 
 
 <!-- Content
 ===================== -->
-<div class="container-fluid" style="padding-top: 18px; padding-bottom: 18px;">
+<div class="container-fluid" style="padding-top: 18px; padding-bottom: 18px; display: none;" >
     <div class="row">
         <div class="col-xs-12">
             <!-- start content-->
