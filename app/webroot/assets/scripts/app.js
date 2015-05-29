@@ -308,26 +308,41 @@ angular.module('publications',[])
         $scope.httpRequestPromise = $http.post('/products', $scope.model).
             success(function(data) {
                 $log.log('httpRequest data: ',data);
-                $scope.publications = data;
 
-				var publication = {
-					id:'',
-					title:'',
-					slug:'',
-					status:0,
-					quantity:0,
-					created:''
-				};
+                if(data['expired_session']){
+                    window.location = "/login";
+                }
 
-//                if(data['expired_session']){
-//                    window.location = "/login";
-//                }
-//                if(data['status'] === 'success'){
-////                    lastResponseData = data;
-////                    process();
-//                }else{
-//                    window.location = "/";
-//                }
+                if(data['status'] === 'success'){
+					$scope.publications = [];
+
+					if(data['data']['products'].length > 0){
+						var publications = [];
+						angular.forEach(data['data']['products'],function(publication){
+							var obj = {
+								id: 		publication['Product']['id'],
+								title:		$filter('capitalizeFirstChar')(publication['Product']['title']),
+								slug:		$filter('slug')(publication['Product']['title']),
+								status:		publication['Product']['status'],
+								price:		publication['Product']['price'],
+								quantity:	publication['Product']['quantity'],
+								created:	$filter('dateParse')(publication['Product']['created'],'dd/MM/yyyy - hh:mm a')
+							};
+							obj.link = '/product/'+obj.id+'/'+obj.slug+'.html';
+
+							if(publication['Image'] == undefined || publication['Image'].length == 0){
+								obj.image = '/assets/images/no-image-available.png'
+							}else{
+								obj.image = '/assets/images/publications/'+publication['Image'][0]['name'];
+							}
+							publications.push(obj);
+						});
+						$scope.publications = publications;
+					}
+
+                }else{
+                    window.location = "/";
+                }
 
             }).
             error(function() {
