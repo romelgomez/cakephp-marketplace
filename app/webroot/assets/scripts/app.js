@@ -257,7 +257,7 @@ angular.module('publications',[])
         if(segments != ''){
             var split_segments = url.attr('fragment').split('/');
             if(split_segments.length){
-                angular.forEach(split_segments, function(parameter, index) {
+                angular.forEach(split_segments, function(parameter) {
                     if(parameter.indexOf("search-") !== -1){
                         var search_string = utility.stringReplace(parameter,'search-','');
                         /* La cadena search_string se manipula en el siguiente orden.
@@ -298,17 +298,26 @@ angular.module('publications',[])
 
         return url_obj;
     })
-    .controller('PublicationsController',['$scope','$http','notificationService','urlInfo','$log',function($scope,$http,notificationService,urlInfo,$log){
+    .controller('PublicationsController',['$scope','$http','notificationService','urlInfo','$filter','$log',function($scope,$http,notificationService,urlInfo,$filter,$log){
 
         $log.log('urlInfo',urlInfo);
+
+        $scope.publications = {};
 
         $scope.model = urlInfo;
         $scope.httpRequestPromise = $http.post('/products', $scope.model).
             success(function(data) {
-                // Si la sesión ha expirado
-
-
+                $log.log('httpRequest data: ',data);
                 $scope.publications = data;
+
+				var publication = {
+					id:'',
+					title:'',
+					slug:'',
+					status:0,
+					quantity:0,
+					created:''
+				};
 
 //                if(data['expired_session']){
 //                    window.location = "/login";
@@ -319,13 +328,11 @@ angular.module('publications',[])
 //                }else{
 //                    window.location = "/";
 //                }
+
             }).
             error(function() {
                 window.location = "/";
             });
-
-
-        $scope.type = 'published';
 
     }])
     .directive('published',['$log',function($log){
@@ -336,54 +343,6 @@ angular.module('publications',[])
             scope: {},
             link:function(scope,element,attrs){
 
-                $log.log('scope: ',scope);
-                $log.log('element: ',element);
-                $log.log('attrs: ',attrs);
-
-                var publications  = {};
-                scope.type  = attrs.type;
-                scope.expression  = true;
-
-                angular.forEach(attrs.data, function(value, key) {
-//                  this.push(key + ': ' + value);
-                    $log.log('value: ',value);
-
-
-                });
-
-//                {
-//                    "Product": {
-//                    "id": "54bd5007-81e8-4ea7-b04d-303d7f000008",
-//                        "user_id": "54bd4fc0-45f0-464f-82f1-33007f000008",
-//                        "title": "Case corsair",
-//                        "body": "<p>ok la ase&nbsp;</p>",
-//                        "price": "11",
-//                        "quantity": "11",
-//                        "status": true,
-//                        "published": true,
-//                        "banned": false,
-//                        "deleted": false,
-//                        "created": "2015-01-19 14:12:15",
-//                        "modified": "2015-05-13 10:29:02"
-//                },
-//                    "Image": [
-//                    {
-//                        "id": "555366b7-c648-4ff7-b722-0fca7f000008",
-//                        "parent_id": null,
-//                        "product_id": "54bd5007-81e8-4ea7-b04d-303d7f000008",
-//                        "size": "small",
-//                        "name": "03d25276-a50c-432f-ace8-04526379ab5a.jpg",
-//                        "name_tag": "120-PG-1500-XR_LG_1.jpg",
-//                        "deleted": false,
-//                        "created": "2015-05-13 10:29:03",
-//                        "modified": "2015-05-13 10:29:03"
-//                    }
-//                ]
-//                }
-
-//                attrs.data
-
-
             }
         };
     }]);
@@ -393,14 +352,27 @@ angular.module('filters',[])
         return function(input) {
             return (!!input) ? input.replace(/([^\W_]+[^\s-]*) */g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}) : '';
         };
+    })
+    .filter('slug', function() {
+        return function(input) {
+            return (!!input) ? String(input).trim().toLowerCase().replace(/([-()\[\]{}+?*.$\^|,:#<!\\®\/´`])/g, ' ').replace(/\s+/g, ' ').replace(/\s+/g, '-') : '';  //  http://www.regexr.com/  | http://stackoverflow.com/questions/11092951/regex-friendly-url
+        };
+    })
+    .filter('capitalizeFirstChar', function() {
+        return function(input) {
+            return (!!input) ? input.trim().replace(/(^\w{0,1})/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1);}) : '';
+        };
+    })
+	.filter('dateParse', function($filter) {
+        return function(input,format,timezone) {
+            return (!!input) ? $filter('date')( Date.parse(input), format, timezone) : '';
+        };
     });
 
-angular.module('app',['ui.bootstrap','forms','publications']);
-
+angular.module('app',['ui.bootstrap','forms','publications','filters']);
 
 
 var prepareProduct = function(obj){
-
     var id          = obj['Product']['id'];
     var title       = obj['Product']['title'].trim();
     var price       = obj['Product']['price'];
@@ -423,7 +395,6 @@ var prepareProduct = function(obj){
 
     var image = '';
 
-
 //    $.get(image_url)
 //        .done(function() {
 //            // Do something now you know the image exists.
@@ -432,7 +403,6 @@ var prepareProduct = function(obj){
 //            // Image doesn't exist - do something else.
 //
 //        })
-
 
     if(obj['Image'] == undefined || obj['Image'].length == 0){
         image = '/resources/app/img/no-image-available.png';

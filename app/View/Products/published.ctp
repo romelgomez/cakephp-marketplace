@@ -1,14 +1,34 @@
 <script type="text/ng-template" id="published.html">
-<span>base</span>
+    <div ng-repeat="publication in publications">
+        <pre>{{publication | json}}</pre>
+    </div>
 </script>
 
-<section ng-controller="PublicationsController">
+<section ng-controller="PublicationsController" style="padding: 15px;">
 
-<!--    <pre>{{publications['data']['products'] | json}}</pre>-->
-<!--    <pre>{{publications | json}}</pre>-->
+<!-- <pre>{{publications | json}}</pre>-->
 
-
-    <published data="{{publications['data']['products']}}"></published>
+    <div ng-repeat="publication in publications['data']['products']" class="media bg-info publication">
+        <a class="pull-left" href="/product/{{publication['Product']['id']}}/{{publication['Product']['title'] | slug}}.html">
+            <img ng-src="{{(publication['Image'] == undefined || publication['Image'].length == 0) ? '/assets/images/no-image-available.png' : '/assets/images/publications/'+publication['Image'][0]['name']; }}" class="img-thumbnail" style="width: 200px; ">
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading" style="margin-bottom: 10px; border-bottom: 1px solid gold; padding-bottom: 9px;" ><a href="/product/{{publication['Product']['id']}}/{{publication['Product']['title'] | slug}}.html">{{publication['Product']['title'] | capitalizeFirstChar }}</a></h4>
+            <div style="margin-bottom: 10px;">
+                <div class="btn-group">
+                    <button class="btn btn-default edit"><i class="icon-edit"></i> Edit</button>
+										<button class="btn btn-default publication-status-button"><span class="glyphicon" ng-class="{'glyphicon-play' : publication['Product']['status'] == 0, 'glyphicon-stop' : publication['Product']['status'] == 1}"></span> {{(publication['Product']['status']) ? 'paused' : 'published'}}</button>
+                    <button class="btn btn-danger delete" ><i class="icon-remove-sign"></i> Remove</button>
+                </div>
+            </div>
+            <div>
+                <span class="glyphicon glyphicon-tag"></span> Price: ${{publication['Product']['price']}}<br>
+                <span class="glyphicon glyphicon-off"></span> Status: <span class="label" ng-class="{'label-warning' : publication['Product']['status'] == 0, 'label-success' : publication['Product']['status'] == 1}" >{{(publication['Product']['status']) ? 'published' : 'paused'}}</span> <br>
+                <span class="glyphicon glyphicon-th"></span> Quantity in stock: <span class="badge" ng-class="{'badge-important': publication['Product']['quantity']>=1 && publication['Product']['quantity']<=5,'badge-warning': publication['Product']['quantity']>=6 && publication['Product']['quantity']<=10,'badge-success': publication['Product']['quantity']>10}">{{publication['Product']['quantity']}}</span><br>
+                <span class="glyphicon glyphicon-calendar"></span> Created: {{ publication['Product']['created'] | dateParse:'dd/MM/yyyy - hh:mm a'}}
+            </div>
+        </div>
+    </div>
 
 
 </section>
