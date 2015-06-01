@@ -298,13 +298,46 @@ angular.module('publications',[])
 
         return url_obj;
     })
-    .controller('PublicationsController',['$scope','$http','notificationService','urlInfo','$filter','$log',function($scope,$http,notificationService,urlInfo,$filter,$log){
+	.factory('publications',function($filter){
+
+		return {
+			digest:function(list){
+				var publications = [];
+				if(list.length > 0){
+					angular.forEach(list,function(publication){
+						var obj = {
+							id: 		publication['Product']['id'],
+							title:		$filter('capitalizeFirstChar')(publication['Product']['title']),
+							slug:		$filter('slug')(publication['Product']['title']),
+							status:		publication['Product']['status'],
+							price:		publication['Product']['price'],
+							quantity:	publication['Product']['quantity'],
+							created:	$filter('dateParse')(publication['Product']['created'],'dd/MM/yyyy - hh:mm a')
+						};
+						obj.link = '/product/'+obj.id+'/'+obj.slug+'.html';
+						obj.draftLink = '/edit-draft/'+obj.id;
+
+						if(publication['Image'] == undefined || publication['Image'].length == 0){
+							obj.image = '/assets/images/no-image-available.png'
+						}else{
+							obj.image = '/assets/images/publications/'+publication['Image'][0]['name'];
+						}
+						publications.push(obj);
+					});
+				}
+				return publications;
+			}
+		};
+
+	})
+    .controller('PublicationsController',['$scope','$http','notificationService','urlInfo','$filter','publications','$log',function($scope,$http,notificationService,urlInfo,$filter,publications,$log){
 
         $log.log('urlInfo',urlInfo);
 
-        $scope.publications = {};
+        $scope.publications = [];
 
         $scope.model = urlInfo;
+
         $scope.httpRequestPromise = $http.post('/products', $scope.model).
             success(function(data) {
                 $log.log('httpRequest data: ',data);
@@ -314,32 +347,7 @@ angular.module('publications',[])
                 }
 
                 if(data['status'] === 'success'){
-					$scope.publications = [];
-
-					if(data['data']['products'].length > 0){
-						var publications = [];
-						angular.forEach(data['data']['products'],function(publication){
-							var obj = {
-								id: 		publication['Product']['id'],
-								title:		$filter('capitalizeFirstChar')(publication['Product']['title']),
-								slug:		$filter('slug')(publication['Product']['title']),
-								status:		publication['Product']['status'],
-								price:		publication['Product']['price'],
-								quantity:	publication['Product']['quantity'],
-								created:	$filter('dateParse')(publication['Product']['created'],'dd/MM/yyyy - hh:mm a')
-							};
-							obj.link = '/product/'+obj.id+'/'+obj.slug+'.html';
-
-							if(publication['Image'] == undefined || publication['Image'].length == 0){
-								obj.image = '/assets/images/no-image-available.png'
-							}else{
-								obj.image = '/assets/images/publications/'+publication['Image'][0]['name'];
-							}
-							publications.push(obj);
-						});
-						$scope.publications = publications;
-					}
-
+					$scope.publications = publications.digest(data['data']['products']);
                 }else{
                     window.location = "/";
                 }
@@ -350,15 +358,44 @@ angular.module('publications',[])
             });
 
     }])
-    .directive('published',['$log',function($log){
+    .directive('publications',['$log','$templateCache','$compile',function($log,$templateCache,$compile){
+
         return {
             restrict:'E',
-            templateUrl: 'published.html',
-            replace: true,
-            scope: {},
+            scope: {
+				'publications':'=data',
+				'type':'@'
+			},
             link:function(scope,element,attrs){
 
-            }
+				if(typeof scope.publications ==  "undefined"){
+					throw { message: 'attrs data is not defined' };
+				}
+				if(typeof scope.type ==  "undefined"){
+					throw { message: 'attrs type is not defined' };
+				}
+
+				scope.$watch('publications', function(){
+
+					var template = '';
+
+					switch(scope.type) {
+						case 'published':
+							template = 'published.html';
+							break;
+						case 'drafts':
+							template = 'drafts.html';
+							break;
+						case 'inStock':
+							template = 'inStock.html';
+							break;
+					}
+
+					element.html($compile($templateCache.get(template))(scope));
+
+				});
+
+			}
         };
     }]);
 

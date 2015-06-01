@@ -1,35 +1,61 @@
 <script type="text/ng-template" id="published.html">
-    <div ng-repeat="publication in publications">
-        <pre>{{publication | json}}</pre>
-    </div>
+	<div ng-repeat="publication in publications" class="media bg-info publication">
+		<a class="pull-left" ng-href="{{publication.link}}">
+			<img ng-src="{{publication.image}}" class="img-thumbnail" style="width: 200px; ">
+		</a>
+		<div class="media-body">
+			<h4 class="media-heading" style="margin-bottom: 10px; border-bottom: 1px solid gold; padding-bottom: 9px;" ><a ng-href="{{publication.link}}">{{publication.title}}</a></h4>
+			<div style="margin-bottom: 10px;">
+				<div class="btn-group">
+					<button class="btn btn-default edit"><i class="icon-edit"></i> Edit</button>
+					<button class="btn btn-default publication-status-button"><span class="glyphicon" ng-class="{'glyphicon-play' : publication.status == 0, 'glyphicon-stop' : publication.status == 1}"></span> {{(publication.status) ? 'paused' : 'published'}}</button>
+					<button class="btn btn-danger delete" ><i class="icon-remove-sign"></i> Remove</button>
+				</div>
+			</div>
+			<div>
+				<span class="glyphicon glyphicon-tag"></span> Price: ${{publication.price}}<br>
+				<span class="glyphicon glyphicon-off"></span> Status: <span class="label" ng-class="{'label-warning' : publication.status == 0, 'label-success' : publication.status == 1}" >{{(publication.status) ? 'published' : 'paused'}}</span> <br>
+				<span class="glyphicon glyphicon-th"></span> Quantity in stock: <span class="badge" ng-class="{'badge-important': publication.quantity>=1 && publication.quantity<=5,'badge-warning': publication.quantity>=6 && publication.quantity<=10,'badge-success': publication.quantity>10}">{{publication.quantity}}</span><br>
+				<span class="glyphicon glyphicon-calendar"></span> Created: {{publication.created}}
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/ng-template" id="drafts.html">
+	<div ng-repeat="publication in publications" class="media bg-info publication">
+		<a class="pull-left" ng-href="{{publication.draftLink}}">
+			<img ng-src="{{publication.image}}" class="img-thumbnail" style="width: 200px;">
+		</a>
+		<div class="media-body">
+			<h4 class="media-heading" style="margin-bottom: 10px; border-bottom: 1px solid gold; padding-bottom: 9px;" ><a ng-href="{{publication.draftLink}}">{{publication.title === "" ? "Untitled" : publication.title}}</a></h4>
+			<div style="margin-bottom: 10px;">
+				<div class="btn-group">
+					<button class="btn btn-default edit"><i class="icon-edit"></i> Edit</button>
+				</div>
+			</div>
+			<div>
+				<span class="glyphicon glyphicon-calendar"></span> {{publication.created}}
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="inStock.html">
+	<div class="col-md-4" ng-repeat="publication in publications">
+		<div class="thumbnail">
+			<a ng-href="{{publication.link}}"><img ng-src="{{publication.image}}" alt="..."></a>
+			<div class="caption" style="border-top: 1px solid gold;">
+				<h3><a ng-href="{{publication.link}}" style="color: white;" >{{publication.title | capitalizeFirstChar | limitTo:32 }}</a></h3>
+				<h4 style="color: gold;">Price: ${{publication.price}}</h4>
+			</div>
+		</div>
+	</div>
 </script>
 
 <section ng-controller="PublicationsController" style="padding: 15px;">
 
 <!-- <pre>{{publications | json}}</pre>-->
-
-    <div ng-repeat="publication in publications" class="media bg-info publication">
-        <a class="pull-left" ng-href="{{publication.link}}">
-            <img ng-src="{{publication.image}}" class="img-thumbnail" style="width: 200px; ">
-        </a>
-        <div class="media-body">
-            <h4 class="media-heading" style="margin-bottom: 10px; border-bottom: 1px solid gold; padding-bottom: 9px;" ><a ng-href="{{publication.link}}">{{publication.title}}</a></h4>
-            <div style="margin-bottom: 10px;">
-                <div class="btn-group">
-                    <button class="btn btn-default edit"><i class="icon-edit"></i> Edit</button>
-										<button class="btn btn-default publication-status-button"><span class="glyphicon" ng-class="{'glyphicon-play' : publication.status == 0, 'glyphicon-stop' : publication.status == 1}"></span> {{(publication.status) ? 'paused' : 'published'}}</button>
-                    <button class="btn btn-danger delete" ><i class="icon-remove-sign"></i> Remove</button>
-                </div>
-            </div>
-            <div>
-                <span class="glyphicon glyphicon-tag"></span> Price: ${{publication.price}}<br>
-                <span class="glyphicon glyphicon-off"></span> Status: <span class="label" ng-class="{'label-warning' : publication.status == 0, 'label-success' : publication.status == 1}" >{{(publication.status) ? 'published' : 'paused'}}</span> <br>
-                <span class="glyphicon glyphicon-th"></span> Quantity in stock: <span class="badge" ng-class="{'badge-important': publication.quantity>=1 && publication.quantity<=5,'badge-warning': publication.quantity>=6 && publication.quantity<=10,'badge-success': publication.quantity>10}">{{publication.quantity}}</span><br>
-                <span class="glyphicon glyphicon-calendar"></span> Created: {{publication.created}}
-            </div>
-        </div>
-    </div>
-
+	<publications data="publications" type="published"></publications>
 
 </section>
 
@@ -153,31 +179,3 @@
         </div>
     </div>
 </div>
-
-<?php
-//
-//    // CSS
-//    $css = array();
-//
-//    array_push($css,'/resources/app/css/base.css');
-//
-//    $this->Html->css($css, null, array('inline' => false));
-//
-//    // JS
-//    $scripts = array();
-//
-////  jQuery Validation Plugin - https://github.com/jzaefferer/jquery-validation
-////  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js');
-////  array_push($scripts,'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js');
-//    array_push($scripts,'/resources/library-vendor/jquery-validate/jquery.validate.js');
-//    array_push($scripts,'/resources/library-vendor/jquery-validate/additional-methods.js');
-//
-////  Purl - https://github.com/allmarkedup/purl
-////  array_push($scripts,'https://cdnjs.cloudflare.com/ajax/libs/purl/2.3.1/purl.min.js');
-//    array_push($scripts,'');
-////
-////    array_push($scripts,'/resources/app/js/base.publications.js');
-////
-//    echo $this->Html->script($scripts,array('inline' => false));
-//
-//?>

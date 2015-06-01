@@ -220,6 +220,13 @@ a:hover{
     background: url(/resources/app/img/escheresque_ste.png);
 }
 
+
+.thumbnail{
+	border: 1px solid black;
+	color: #ffffff;
+	background: url(/resources/app/img/escheresque_ste.png);
+}
+
 @media print
 {
     .non-printable { display: none; }
