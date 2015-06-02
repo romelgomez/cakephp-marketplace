@@ -549,17 +549,16 @@
 
 			$products = $this->{'paginate'}('Product');
 
-			$return['status'] 								= 'success';
-			$return['data']['total-products'] 				= $totalProducts;
-			$return['data']['order-by'] 					= $orderBy;
-			$return['data']['search'] 						= $search;
-			$return['data']['products'] 					= $products;
-			$return['data']['paging-info']['count'] 		= $this->{'request'}->params['paging']['Product']['count'];
-			$return['data']['paging-info']['current'] 		= $this->{'request'}->params['paging']['Product']['current'];
-			$return['data']['paging-info']['page'] 			= $this->{'request'}->params['paging']['Product']['page'];
-			$return['data']['paging-info']['pageCount'] 	= $this->{'request'}->params['paging']['Product']['pageCount'];
-			$return['data']['paging-info']['prevPage'] 		= $this->{'request'}->params['paging']['Product']['prevPage'];
-			$return['data']['paging-info']['nextPage'] 		= $this->{'request'}->params['paging']['Product']['nextPage'];
+			$return['status'] 					= 'success';
+			$return['data']['products'] 		= $products;
+			$return['data']['orderBy']	 		= $orderBy;
+			$return['data']['search'] 			= $search;
+			$return['data']['totalItems'] 		= $this->{'request'}->params['paging']['Product']['count'];
+			$return['data']['itemsInThisPage'] 	= $this->{'request'}->params['paging']['Product']['current'];
+			$return['data']['currentPage'] 		= $this->{'request'}->params['paging']['Product']['page'];
+			$return['data']['totalPages'] 		= $this->{'request'}->params['paging']['Product']['pageCount'];
+			$return['data']['prevPage'] 		= $this->{'request'}->params['paging']['Product']['prevPage'];
+			$return['data']['nextPage'] 		= $this->{'request'}->params['paging']['Product']['nextPage'];
 
 		}catch(Exception $e){
 

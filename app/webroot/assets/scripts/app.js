@@ -358,6 +358,9 @@ angular.module('publications',[])
             });
 
     }])
+	.directive('paginate',[function(){
+
+	}])
     .directive('publications',['$log','$templateCache','$compile',function($log,$templateCache,$compile){
 
         return {
@@ -381,13 +384,25 @@ angular.module('publications',[])
 
 					switch(scope.type) {
 						case 'published':
-							template = 'published.html';
+							if(scope.publications.length > 0){
+								template = 'published.html';
+							}else{
+								template = 'noPublished.html';
+							}
 							break;
 						case 'drafts':
-							template = 'drafts.html';
+							if(scope.publications.length > 0){
+								template = 'drafts.html';
+							}else{
+								template = 'noDrafts.html';
+							}
 							break;
-						case 'inStock':
-							template = 'inStock.html';
+						case 'stock':
+							if(scope.publications.length > 0){
+								template = 'stock.html';
+							}else{
+								template = 'noStock.html';
+							}
 							break;
 					}
 
@@ -422,151 +437,3 @@ angular.module('filters',[])
     });
 
 angular.module('app',['ui.bootstrap','forms','publications','filters']);
-
-
-var prepareProduct = function(obj){
-    var id          = obj['Product']['id'];
-    var title       = obj['Product']['title'].trim();
-    var price       = obj['Product']['price'];
-    var publication = '';
-
-    var str = obj['Product']['created'];
-    str = str.replace(/-/g,"/");
-    var date        = new Date(str);
-    var created     = date.getDay()+'/'+date.getMonth()+'/'+date.getFullYear()+' - '+date.getHours()+':'+date.getMinutes();
-
-    var slug = obj['Product']['title'].trim().toLowerCase();
-    slug = utility.stringReplace(slug,'®','');
-    slug = utility.stringReplace(slug,':','');
-    slug = utility.stringReplace(slug,'/','');
-    slug = utility.stringReplace(slug,'|','');
-    slug =  slug.replace(/\s+/g, ' ');
-    slug = utility.stringReplace(slug,' ','-');
-
-    var publicationLink = '/product/'+id+'/'+slug+'.html';
-
-    var image = '';
-
-//    $.get(image_url)
-//        .done(function() {
-//            // Do something now you know the image exists.
-//
-//        }).fail(function() {
-//            // Image doesn't exist - do something else.
-//
-//        })
-
-    if(obj['Image'] == undefined || obj['Image'].length == 0){
-        image = '/resources/app/img/no-image-available.png';
-    }else{
-        image = '/resources/app/img/products/'+obj['Image'][0]['name'];
-    }
-
-    switch (currentAction()) {
-        case 'stock':
-
-            if(title.length > 32){
-                title = title.slice(0, 30)+' ...';
-            }
-            title = utility.capitaliseFirstLetter(title);
-
-            publication = '<div class="col-md-4">'+
-                '<div class="thumbnail" style="border: 1px solid black; color: #ffffff; background: url(/resources/app/img/escheresque_ste.png); " >'+
-                '<a href="'+publicationLink+'"><img src="'+image+'" alt="..."></a>'+
-                '<div class="caption" style="border-top: 1px solid gold;">'+
-                '<h3><a href="'+publicationLink+'" style="color: white;" >'+title+'</a></h3>'+
-                '<h4 style="color: gold;">Price: $'+price+'</h4>'+
-                '</div>'+
-                '</div>'+
-                '</div>';
-
-            break;
-        case 'drafts':
-
-            var  draftLink = '/edit-draft/'+obj['Product']['id'];
-
-            if(title == '') {
-                title = '<mark>Untitled</mark>';
-            }
-
-            // se arma una publicación
-            publication = '<div id="product-'+id+'"  class="media bg-info product" style="padding: 10px;border-radius: 4px; color:white; background-color: #222; background: url(/resources/app/img/escheresque_ste.png); " >'+
-                '<a class="pull-left" href="'+draftLink+'">'+
-                '<img src="'+image+'" class="img-thumbnail" style="width: 200px; ">'+
-                '</a>'+
-                '<div class="media-body">'+
-                '<h4 class="media-heading" style="margin-bottom: 10px; border-bottom: 1px solid gold; padding-bottom: 9px;" ><a href="'+draftLink+'">'+utility.capitaliseFirstLetter(title)+'</a></h4>'+
-
-                '<div style="margin-bottom: 10px;">'+
-                '<div class="btn-group">'+
-                '<button class="btn btn-default edit"><i class="icon-edit"></i> Edit</button>'+
-                '</div>'+
-                '</div>'+
-                '<div>'+
-                '<span class="glyphicon glyphicon-calendar"></span> Created: '+created+
-                '</div>'+
-                '</div>'+
-                '</div>';
-
-
-            break;
-        case 'published':
-
-            var status = '';
-            var status_button = '';
-
-            if(obj['Product']['status']){
-                status = '<span class="label label-success publication-status-label">published</span>';
-                status_button = '<button class="btn btn-default publication-status-button"><span class="glyphicon glyphicon-stop"></span> Pause</button>';
-            }else{
-                status = '<span class="label label-warning publication-status-label">paused</span>';
-                status_button = '<button class="btn btn-default publication-status-button"><span class="glyphicon glyphicon-play"></span> Enable</button>';
-            }
-
-            var quantity = obj['Product']['quantity'];
-            var _quantity = '';
-
-            if(quantity == 0){
-                _quantity = '<span class="badge">0</span>';
-            }
-            else if(quantity>= 1 && quantity<=5){
-                _quantity = '<span class="badge badge-important">'+quantity+'</span>';
-            }
-            else if(quantity>=6 && quantity<=10){
-                _quantity = '<span class="badge badge-warning">'+quantity+'</span>';
-            }
-            else if(quantity>10){
-                _quantity = '<span class="badge badge-success">'+quantity+'</span>';
-            }
-            // END
-
-            // se arma una publicación
-            publication  = '<div id="product-'+id+'"  class="media bg-info product" style="padding: 10px;border-radius: 4px; color:white; background-color: #222; background: url(/resources/app/img/escheresque_ste.png); " >'+
-                '<a class="pull-left" href="'+publicationLink+'">'+
-                '<img src="'+image+'" class="img-thumbnail" style="width: 200px; ">'+
-                '</a>'+
-                '<div class="media-body">'+
-                '<h4 class="media-heading" style="margin-bottom: 10px; border-bottom: 1px solid gold; padding-bottom: 9px;" ><a href="'+publicationLink+'">'+utility.capitaliseFirstLetter(title)+'</a></h4>'+
-
-                '<div style="margin-bottom: 10px;">'+
-                '<div class="btn-group">'+
-                '<button class="btn btn-default edit"><i class="icon-edit"></i> Edit</button>'+
-                status_button+
-                '<button class="btn btn-danger delete" ><i class="icon-remove-sign"></i> Remove</button>'+
-                '</div>'+
-                '</div>'+
-                '<div>'+
-                '<span class="glyphicon glyphicon-tag"></span> Price: $'+price+'<br>'+
-                '<span class="glyphicon glyphicon-off"></span> Status: '+status+'<br>'+
-                '<span class="glyphicon glyphicon-th"></span> Quantity in stock: '+_quantity+'<br>'+
-                '<span class="glyphicon glyphicon-calendar"></span> Created: '+created+
-                '</div>'+
-                '</div>'+
-                '</div>';
-
-            break;
-    }
-
-    return publication;
-
-};

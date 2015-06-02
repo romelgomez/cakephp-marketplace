@@ -21,6 +21,11 @@
 		</div>
 	</div>
 </script>
+<script type="text/ng-template" id="noPublished.html">
+	<div  class="alert alert-warning" role="alert" >
+		No products published yet. <a ng-href="/publish" class="alert-link" >Add a new product!</a>
+	</div>
+</script>
 <script type="text/ng-template" id="drafts.html">
 	<div ng-repeat="publication in publications" class="media bg-info publication">
 		<a class="pull-left" ng-href="{{publication.draftLink}}">
@@ -39,8 +44,12 @@
 		</div>
 	</div>
 </script>
-
-<script type="text/ng-template" id="inStock.html">
+<script type="text/ng-template" id="noDrafts.html">
+	<div  class="alert alert-warning" role="alert" >
+		No drafts. <a ng-href="/publish" class="alert-link" >Add a new product!</a>
+	</div>
+</script>
+<script type="text/ng-template" id="stock.html">
 	<div class="col-md-4" ng-repeat="publication in publications">
 		<div class="thumbnail">
 			<a ng-href="{{publication.link}}"><img ng-src="{{publication.image}}" alt="..."></a>
@@ -51,8 +60,15 @@
 		</div>
 	</div>
 </script>
+<script type="text/ng-template" id="noStock.html">
+	<div class="alert alert-info" role="alert" >
+		$data['User']['name'] - not have publications.
+	</div>
+</script>
 
 <section ng-controller="PublicationsController" style="padding: 15px;">
+
+	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
 
 <!-- <pre>{{publications | json}}</pre>-->
 	<publications data="publications" type="published"></publications>
