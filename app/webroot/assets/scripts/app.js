@@ -347,7 +347,20 @@ angular.module('publications',[])
                 }
 
                 if(data['status'] === 'success'){
-					$scope.publications = publications.digest(data['data']['products']);
+
+					// 	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" boundary-links="true" rotate="false" num-pages="numPages" class="pagination-sm"></pagination>
+					//$return['status'] 			= 'success';
+					//$return['products'] 			= $products;
+					//$return['orderBy']	 		= $orderBy;
+					//$return['search'] 			= $search;
+					//$return['totalItems'] 		= $this->{'request'}->params['paging']['Product']['count'];
+					//$return['itemsInThisPage'] 	= $this->{'request'}->params['paging']['Product']['current'];
+					//$return['currentPage'] 		= $this->{'request'}->params['paging']['Product']['page'];
+					//$return['totalPages'] 		= $this->{'request'}->params['paging']['Product']['pageCount'];
+					//$return['prevPage'] 			= $this->{'request'}->params['paging']['Product']['prevPage'];
+					//$return['nextPage'] 			= $this->{'request'}->params['paging']['Product']['nextPage'];
+
+					$scope.publications = publications.digest(data['products']);
                 }else{
                     window.location = "/";
                 }
@@ -357,8 +370,35 @@ angular.module('publications',[])
                 window.location = "/";
             });
 
+
+ 		$scope.pageChanged = function() {
+			$log.log('Page changed to: ' + $scope.currentPage);
+		};
+
+
     }])
 	.directive('paginate',[function(){
+
+		/*
+		 - toda el código de PublicationsController puede ir en la directiva publications
+		 - la directiva pagination se encarga de establecer la url y lidiar con la paginación
+		 - la directiva filtro se encargará de establecer la url y filtrar los registros
+		 - trata de hacer todo muy genérico para que funcione para cualquier escenario
+		*/
+
+
+	}])
+	.directive('logs',['$http','$templateCache','$compile',function($http,$templateCache,$compile){
+		return {
+			restrict:'E',
+			scope: {
+				'of':'@',
+				'method':'@'
+			},
+			link:function(scope,element,attrs){
+
+			}
+		};
 
 	}])
     .directive('publications',['$log','$templateCache','$compile',function($log,$templateCache,$compile){

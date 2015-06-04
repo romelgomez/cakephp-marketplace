@@ -68,7 +68,9 @@
 
 <section ng-controller="PublicationsController" style="padding: 15px;">
 
-	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+	<div ng-if="publications.length > 0">
+		<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+	</div>
 
 <!-- <pre>{{publications | json}}</pre>-->
 	<publications data="publications" type="published"></publications>
