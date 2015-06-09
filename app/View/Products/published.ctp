@@ -68,11 +68,21 @@
 
 <section ng-controller="PublicationsController" style="padding: 15px;">
 
-	<div ng-if="publications.length > 0">
-		<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
-	</div>
+	<ul>
+		<li>totalItems {{totalItems}}</li>
+		<li>currentPage {{currentPage}}</li>
+		<li>maxSize {{maxSize}}</li>
+	</ul>
 
-<!-- <pre>{{publications | json}}</pre>-->
+
+<!--	<div ng-if="publications.length > 0">-->
+<!--	</div>-->
+
+	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"  ng-change="pageChanged()"></pagination>
+
+<!--	<pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></pagination>-->
+
+	<!-- <pre>{{publications | json}}</pre>-->
 	<publications data="publications" type="published"></publications>
 
 </section>

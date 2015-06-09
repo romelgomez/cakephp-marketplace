@@ -543,7 +543,7 @@
 					)
 				),
 				'order' => $order,
-				'limit' => 12,
+				'limit' => 10,
 				'page'	=>$page
 			);
 
@@ -574,7 +574,7 @@
 						)
 					),
 					'order' => $order,
-					'limit' => 12,
+					'limit' => 10,
 					'page'	=> $previous_page
 				);
 
@@ -606,7 +606,7 @@
 							)
 						),
 						'order' => $order,
-						'limit' => 12,
+						'limit' => 10,
 						'page'	=> $last_page
 					);
 

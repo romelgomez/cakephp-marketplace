@@ -985,6 +985,7 @@ $(document).ready(function(){
                         var url     = '';
                         var new_url = '';
 
+						// aki establesco la url en funcion a los datos que contiene la url
                         if(url_obj['order-by'] != ''){
                             if(url_obj.search != ''){
                                 url = utility.stringReplace(url_obj.search,' ','-');
@@ -1034,7 +1035,6 @@ $(document).ready(function(){
                     nextPage.on('click', function(){
 
                         var url_obj =  parseUrl();
-
                         var next_page = lastResponseData['paging-info']['page']+1; // también puede tomar el valor de: url_obj.page
                         var request_this = {};
 

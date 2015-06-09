@@ -239,64 +239,113 @@ angular.module('forms',['ngMessages','cgBusy','jlareau.pnotify','validation.matc
     }]);
 
 angular.module('publications',[])
-    .factory('urlInfo', function($location) {
+    .factory('url', function($location,$log) {
 
-        var pathname 	= $location.absUrl();
-        var url 		= window.purl(pathname);
-        var segments	= url.attr('fragment');
-        var action   	= url.segment(1);
-        var userId   	= url.segment(2);
+		var info = function () {
 
-        var url_obj         	= {};
-        url_obj['action']     	= action;
-        url_obj['user-id']     	= userId;
-        url_obj['search']      	= '';
-        url_obj['page']        	= '';
-        url_obj['order-by']    	= '';
+			var pathname 	= $location.absUrl();
+			var url 		= window.purl(pathname);
+			var segments	= url.attr('fragment');
+			var action   	= url.segment(1);
+			var userId   	= url.segment(2);
 
-        if(segments != ''){
-            var split_segments = url.attr('fragment').split('/');
-            if(split_segments.length){
-                angular.forEach(split_segments, function(parameter) {
-                    if(parameter.indexOf("search-") !== -1){
-                        var search_string = utility.stringReplace(parameter,'search-','');
-                        /* La cadena search_string se manipula en el siguiente orden.
-                         *
-                         * 1) se reemplaza los caracteres especiales
-                         * 2) se elimina los espacios en blancos ante y después de la cadena
-                         * 3) se reemplaza los espacios en blancos largos por uno solo.
-                         *
-                         ********************************************************************/
-                        url_obj.search = search_string.replace(/[^a-zA-Z0-9]/g,' ').trim().replace(/\s{2,}/g, ' ');
-                    }
-                    if(parameter.indexOf("page-") !== -1){
-                        url_obj.page = parseInt(utility.stringReplace(parameter,'page-',''));
-                    }
-                    switch(parameter) {
-                        case 'highest-price':
-                            url_obj['order-by'] = "highest-price";
-                            break;
-                        case 'lowest-price':
-                            url_obj['order-by'] = "lowest-price";
-                            break;
-                        case 'latest':
-                            url_obj['order-by'] = "latest";
-                            break;
-                        case 'oldest':
-                            url_obj['order-by'] = 'oldest';
-                            break;
-                        case 'higher-availability':
-                            url_obj['order-by'] = 'higher-availability';
-                            break;
-                        case 'lower-availability':
-                            url_obj['order-by'] = 'lower-availability';
-                            break;
-                    }
-                });
-            }
-        }
+			var url_obj         	= {};
+			url_obj['action']     	= action;
+			url_obj['user-id']     	= userId;
+			url_obj['search']      	= '';
+			url_obj['page']        	= '';
+			url_obj['order-by']    	= '';
 
-        return url_obj;
+			if(segments != ''){
+				var split_segments = url.attr('fragment').split('/');
+				if(split_segments.length){
+					angular.forEach(split_segments, function(parameter) {
+						if(parameter.indexOf("search-") !== -1){
+							var search_string = utility.stringReplace(parameter,'search-','');
+							/* La cadena search_string se manipula en el siguiente orden.
+							 *
+							 * 1) se reemplaza los caracteres especiales
+							 * 2) se elimina los espacios en blancos ante y después de la cadena
+							 * 3) se reemplaza los espacios en blancos largos por uno solo.
+							 *
+							 ********************************************************************/
+							url_obj.search = search_string.replace(/[^a-zA-Z0-9]/g,' ').trim().replace(/\s{2,}/g, ' ');
+						}
+						if(parameter.indexOf("page-") !== -1){
+							url_obj.page = parseInt(utility.stringReplace(parameter,'page-',''));
+						}
+						switch(parameter) {
+							case 'highest-price':
+								url_obj['order-by'] = "highest-price";
+								break;
+							case 'lowest-price':
+								url_obj['order-by'] = "lowest-price";
+								break;
+							case 'latest':
+								url_obj['order-by'] = "latest";
+								break;
+							case 'oldest':
+								url_obj['order-by'] = 'oldest';
+								break;
+							case 'higher-availability':
+								url_obj['order-by'] = 'higher-availability';
+								break;
+							case 'lower-availability':
+								url_obj['order-by'] = 'lower-availability';
+								break;
+						}
+					});
+				}
+			}
+
+			return url_obj;
+		};
+
+
+
+		return {
+			info: function () {
+				return info();
+			},
+			setPage: function(page){
+				var urlInfo = info();
+				var url     = '';
+				var new_url = '';
+
+				if(urlInfo['order-by'] != ''){
+					if(urlInfo['search'] !== ''){
+						$log.log('a');
+						url = $filter('slug')(urlInfo['search']);
+						new_url = '#search-'+url+'/'+urlInfo['order-by']+'/page-'+page;
+					}else{
+						$log.log('!a');
+						new_url = '#'+urlInfo['order-by']+'/page-'+page;
+					}
+				}else{
+					if(urlInfo['search'] !== ''){
+						$log.log('b');
+						url = $filter('slug')(urlInfo['search']);
+						new_url = "#search-"+url+"/page-"+page;
+					}else{
+						$log.log('!b');
+						new_url = "#page-"+page;
+					}
+				}
+
+				$log.log('new_url',new_url);
+
+				window.location += '#evga'; // new_url;
+
+			},
+			setOrderBy: function(){
+
+			},
+			search:function(){
+
+			}
+		};
+
+
     })
 	.factory('publications',function($filter){
 
@@ -330,51 +379,66 @@ angular.module('publications',[])
 		};
 
 	})
-    .controller('PublicationsController',['$scope','$http','notificationService','urlInfo','$filter','publications','$log',function($scope,$http,notificationService,urlInfo,$filter,publications,$log){
+    .controller('PublicationsController',['$scope','$http','notificationService','url','$filter','publications','$log',function($scope,$http,notificationService,url,$filter,publications,$log){
 
-        $log.log('urlInfo',urlInfo);
+        $log.log('url',url);
+
+		$scope.currentPage = 1;
+		$scope.totalItems = 0;
+		$scope.maxSize 	= 5;
 
         $scope.publications = [];
 
-        $scope.model = urlInfo;
+		var getPublications = function(search,orderBy,page){
 
-        $scope.httpRequestPromise = $http.post('/products', $scope.model).
-            success(function(data) {
-                $log.log('httpRequest data: ',data);
+			$scope.model 	= url.info();
 
-                if(data['expired_session']){
-                    window.location = "/login";
-                }
+			$scope.httpRequestPromise = $http.post('/products', $scope.model).
+				success(function(data) {
+					$log.log('httpRequest data: ',data);
 
-                if(data['status'] === 'success'){
+					if(data['expired_session']){
+						window.location = "/login";
+					}
 
-					// 	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" boundary-links="true" rotate="false" num-pages="numPages" class="pagination-sm"></pagination>
-					//$return['status'] 			= 'success';
-					//$return['products'] 			= $products;
-					//$return['orderBy']	 		= $orderBy;
-					//$return['search'] 			= $search;
-					//$return['totalItems'] 		= $this->{'request'}->params['paging']['Product']['count'];
-					//$return['itemsInThisPage'] 	= $this->{'request'}->params['paging']['Product']['current'];
-					//$return['currentPage'] 		= $this->{'request'}->params['paging']['Product']['page'];
-					//$return['totalPages'] 		= $this->{'request'}->params['paging']['Product']['pageCount'];
-					//$return['prevPage'] 			= $this->{'request'}->params['paging']['Product']['prevPage'];
-					//$return['nextPage'] 			= $this->{'request'}->params['paging']['Product']['nextPage'];
+					if(data['status'] === 'success'){
 
-					$scope.publications = publications.digest(data['products']);
-                }else{
-                    window.location = "/";
-                }
+						// 	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" boundary-links="true" rotate="false" num-pages="numPages" class="pagination-sm"></pagination>
+						//$return['status'] 			= 'success';
+						//$return['products'] 			= $products;
+						//$return['orderBy']	 		= $orderBy;
+						//$return['search'] 			= $search;
+						//$return['totalItems'] 		= $this->{'request'}->params['paging']['Product']['count'];
+						//$return['itemsInThisPage'] 	= $this->{'request'}->params['paging']['Product']['current'];
+						//$return['currentPage'] 		= $this->{'request'}->params['paging']['Product']['page'];
+						//$return['totalPages'] 		= $this->{'request'}->params['paging']['Product']['pageCount'];
+						//$return['prevPage'] 			= $this->{'request'}->params['paging']['Product']['prevPage'];
+						//$return['nextPage'] 			= $this->{'request'}->params['paging']['Product']['nextPage'];
 
-            }).
-            error(function() {
-                window.location = "/";
-            });
+						$scope.publications = publications.digest(data['products']);
+						$scope.totalItems 	= data['totalItems'];
+						$scope.currentPage 	= data['currentPage'];
+
+					}else{
+						window.location = "/";
+					}
+
+				}).
+				error(function() {
+					window.location = "/";
+				});
+		};
 
 
  		$scope.pageChanged = function() {
+			// establesco una nueva url
+	 		url.setPage($scope.currentPage);
+			// solicito obtener nuevamenta las publicacines publicaciones
+			//getPublications()
 			$log.log('Page changed to: ' + $scope.currentPage);
 		};
 
+		getPublications();
 
     }])
 	.directive('paginate',[function(){
