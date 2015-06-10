@@ -239,7 +239,7 @@ angular.module('forms',['ngMessages','cgBusy','jlareau.pnotify','validation.matc
     }]);
 
 angular.module('publications',[])
-    .factory('url', function($location,$log) {
+    .factory('url', function($location,$filter,$log) {
 
 		var info = function () {
 
@@ -261,7 +261,7 @@ angular.module('publications',[])
 				if(split_segments.length){
 					angular.forEach(split_segments, function(parameter) {
 						if(parameter.indexOf("search-") !== -1){
-							var search_string = utility.stringReplace(parameter,'search-','');
+							var search_string = $filter('stringReplace')(parameter,'search-',''); //
 							/* La cadena search_string se manipula en el siguiente orden.
 							 *
 							 * 1) se reemplaza los caracteres especiales
@@ -272,7 +272,7 @@ angular.module('publications',[])
 							url_obj.search = search_string.replace(/[^a-zA-Z0-9]/g,' ').trim().replace(/\s{2,}/g, ' ');
 						}
 						if(parameter.indexOf("page-") !== -1){
-							url_obj.page = parseInt(utility.stringReplace(parameter,'page-',''));
+							url_obj.page = parseInt($filter('stringReplace')(parameter,'page-',''));
 						}
 						switch(parameter) {
 							case 'highest-price':
@@ -332,9 +332,13 @@ angular.module('publications',[])
 					}
 				}
 
-				$log.log('new_url',new_url);
+				//$log.log('new_url',new_url);
 
-				window.location += '#evga'; // new_url;
+				$location.url(new_url);
+
+				//$log.log('$location.url',$location.url());
+
+				//window.location.href += '#evga'; // new_url;
 
 			},
 			setOrderBy: function(){
@@ -389,7 +393,7 @@ angular.module('publications',[])
 
         $scope.publications = [];
 
-		var getPublications = function(search,orderBy,page){
+		var getPublications = function(){
 
 			$scope.model 	= url.info();
 
@@ -433,9 +437,10 @@ angular.module('publications',[])
  		$scope.pageChanged = function() {
 			// establesco una nueva url
 	 		url.setPage($scope.currentPage);
+			//$log.log('url.info()',url.info());
 			// solicito obtener nuevamenta las publicacines publicaciones
-			//getPublications()
-			$log.log('Page changed to: ' + $scope.currentPage);
+			getPublications();
+			//$log.log('Page changed to: ' + $scope.currentPage);
 		};
 
 		getPublications();
@@ -537,6 +542,11 @@ angular.module('filters',[])
 	.filter('dateParse', function($filter) {
         return function(input,format,timezone) {
             return (!!input) ? $filter('date')( Date.parse(input), format, timezone) : '';
+        };
+    })
+	.filter('stringReplace', function() {
+        return function(string,change_this,for_this) {
+			return string.split(change_this).join(for_this);
         };
     });
 
