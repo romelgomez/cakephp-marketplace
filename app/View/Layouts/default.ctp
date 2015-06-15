@@ -40,7 +40,7 @@ array_push($scripts,'/bower_components/angular-validation-match/dist/angular-inp
 array_push($scripts,'/bower_components/angular-bootstrap/ui-bootstrap.js');
 array_push($scripts,'/bower_components/angular-bootstrap/ui-bootstrap-tpls.js');
 array_push($scripts,'/bower_components/angular-messages/angular-messages.js');
-array_push($scripts,'/resources/library-vendor/purl/purl.js');
+array_push($scripts,'/bower_components/uri.js/src/URI.js');
 array_push($scripts,'/assets/scripts/app.js');
 
 array_push($css,'/bower_components/bootstrap/dist/css/bootstrap.css');

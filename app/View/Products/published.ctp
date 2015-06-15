@@ -68,6 +68,8 @@
 
 <section ng-controller="PublicationsController" style="padding: 15px;">
 
+	<button class="btn btn-default" ng-click="logInfo()">logInfo</button>
+
 	<ul>
 		<li>totalItems {{totalItems}}</li>
 		<li>currentPage {{currentPage}}</li>

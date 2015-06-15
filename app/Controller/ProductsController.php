@@ -448,7 +448,7 @@
 
 				// search - conditions
 				if(!isset($request['search']) || $request['search'] == ''){
-					$conditions = array('Product.user_id' => $request['user-id'],'Product.deleted'=>0,'Product.published'=>1,'Product.status'=>1);
+					$conditions = array('Product.user_id' => $request['user'],'Product.deleted'=>0,'Product.published'=>1,'Product.status'=>1);
 				}else{
 					$search = $this->cleanString($request["search"]);
 					$conditions = array(

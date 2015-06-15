@@ -239,27 +239,25 @@ angular.module('forms',['ngMessages','cgBusy','jlareau.pnotify','validation.matc
     }]);
 
 angular.module('publications',[])
-    .factory('url', function($location,$filter,$log) {
+	.factory('url',['$filter','$q',function($filter,$q){
 
 		var info = function () {
-
-			var pathname 	= $location.absUrl();
-			var url 		= window.purl(pathname);
-			var segments	= url.attr('fragment');
-			var action   	= url.segment(1);
-			var userId   	= url.segment(2);
+			var href 		= window.URI(window.location.href); // window.URI($location.absUrl())
+			var action   	= href.segment(0);
+			var user   		= href.segment(1);
+			var fragments 	= href.fragment(); // $location.path();
 
 			var url_obj         	= {};
 			url_obj['action']     	= action;
-			url_obj['user-id']     	= userId;
+			url_obj['user']     	= user;
 			url_obj['search']      	= '';
 			url_obj['page']        	= '';
 			url_obj['order-by']    	= '';
 
-			if(segments != ''){
-				var split_segments = url.attr('fragment').split('/');
-				if(split_segments.length){
-					angular.forEach(split_segments, function(parameter) {
+			if(fragments != ''){
+				var splitSegments = fragments.split('/');
+				if(splitSegments.length){
+					angular.forEach(splitSegments, function(parameter) {
 						if(parameter.indexOf("search-") !== -1){
 							var search_string = $filter('stringReplace')(parameter,'search-',''); //
 							/* La cadena search_string se manipula en el siguiente orden.
@@ -301,56 +299,40 @@ angular.module('publications',[])
 			return url_obj;
 		};
 
-
-
 		return {
 			info: function () {
 				return info();
 			},
-			setPage: function(page){
+			page: function(page){
 				var urlInfo = info();
 				var url     = '';
 				var new_url = '';
 
 				if(urlInfo['order-by'] != ''){
 					if(urlInfo['search'] !== ''){
-						$log.log('a');
 						url = $filter('slug')(urlInfo['search']);
-						new_url = '#search-'+url+'/'+urlInfo['order-by']+'/page-'+page;
+						new_url = '#/search-'+url+'/'+urlInfo['order-by']+'/page-'+page;
 					}else{
-						$log.log('!a');
-						new_url = '#'+urlInfo['order-by']+'/page-'+page;
+						new_url = '#/'+urlInfo['order-by']+'/page-'+page;
 					}
 				}else{
 					if(urlInfo['search'] !== ''){
-						$log.log('b');
 						url = $filter('slug')(urlInfo['search']);
-						new_url = "#search-"+url+"/page-"+page;
+						new_url = "#/search-"+url+"/page-"+page;
 					}else{
-						$log.log('!b');
-						new_url = "#page-"+page;
+						new_url = "#/page-"+page;
 					}
 				}
 
-				//$log.log('new_url',new_url);
-
-				$location.url(new_url);
-
-				//$log.log('$location.url',$location.url());
-
-				//window.location.href += '#evga'; // new_url;
-
+				window.location.href = new_url;
 			},
-			setOrderBy: function(){
-
+			orderBy: function(){
 			},
 			search:function(){
-
 			}
 		};
 
-
-    })
+	}])
 	.factory('publications',function($filter){
 
 		return {
@@ -393,10 +375,14 @@ angular.module('publications',[])
 
         $scope.publications = [];
 
-		var getPublications = function(){
+		var getPublications = function(page,orderBy,search){
 
-			$scope.model 	= url.info();
+			$scope.model 			= url.info();
+			$scope.model.page 		= page | $scope.model.page;
+			$scope.model.orderBy 	= orderBy | $scope.model.orderBy;
+			$scope.model.search 	= search | $scope.model.search;
 
+			$log.log('url.info() in getPublications',url.info());
 			$scope.httpRequestPromise = $http.post('/products', $scope.model).
 				success(function(data) {
 					$log.log('httpRequest data: ',data);
@@ -424,7 +410,7 @@ angular.module('publications',[])
 						$scope.currentPage 	= data['currentPage'];
 
 					}else{
-						window.location = "/";
+						//window.location = "/";
 					}
 
 				}).
@@ -433,14 +419,18 @@ angular.module('publications',[])
 				});
 		};
 
+		$scope.logInfo = function(){
+			$log.log('info:',url.info());
+		};
 
  		$scope.pageChanged = function() {
+
 			// establesco una nueva url
-	 		url.setPage($scope.currentPage);
-			//$log.log('url.info()',url.info());
+			url.page($scope.currentPage);
+
 			// solicito obtener nuevamenta las publicacines publicaciones
-			getPublications();
-			//$log.log('Page changed to: ' + $scope.currentPage);
+			getPublications($scope.currentPage);
+
 		};
 
 		getPublications();
