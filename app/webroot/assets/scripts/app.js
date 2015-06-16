@@ -239,7 +239,7 @@ angular.module('forms',['ngMessages','cgBusy','jlareau.pnotify','validation.matc
     }]);
 
 angular.module('publications',[])
-	.factory('url',['$filter','$q',function($filter,$q){
+	.factory('url',['$filter','$log',function($filter,$log){
 
 		var info = function () {
 			var href 		= window.URI(window.location.href); // window.URI($location.absUrl())
@@ -252,7 +252,7 @@ angular.module('publications',[])
 			url_obj['user']     	= user;
 			url_obj['search']      	= '';
 			url_obj['page']        	= '';
-			url_obj['order-by']    	= '';
+			url_obj['orderBy']    	= '';
 
 			if(fragments != ''){
 				var splitSegments = fragments.split('/');
@@ -274,22 +274,22 @@ angular.module('publications',[])
 						}
 						switch(parameter) {
 							case 'highest-price':
-								url_obj['order-by'] = "highest-price";
+								url_obj['orderBy'] = "highest-price";
 								break;
 							case 'lowest-price':
-								url_obj['order-by'] = "lowest-price";
+								url_obj['orderBy'] = "lowest-price";
 								break;
 							case 'latest':
-								url_obj['order-by'] = "latest";
+								url_obj['orderBy'] = "latest";
 								break;
 							case 'oldest':
-								url_obj['order-by'] = 'oldest';
+								url_obj['orderBy'] = 'oldest';
 								break;
 							case 'higher-availability':
-								url_obj['order-by'] = 'higher-availability';
+								url_obj['orderBy'] = 'higher-availability';
 								break;
 							case 'lower-availability':
-								url_obj['order-by'] = 'lower-availability';
+								url_obj['orderBy'] = 'lower-availability';
 								break;
 						}
 					});
@@ -308,12 +308,12 @@ angular.module('publications',[])
 				var url     = '';
 				var new_url = '';
 
-				if(urlInfo['order-by'] != ''){
+				if(urlInfo['orderBy'] != ''){
 					if(urlInfo['search'] !== ''){
 						url = $filter('slug')(urlInfo['search']);
-						new_url = '#/search-'+url+'/'+urlInfo['order-by']+'/page-'+page;
+						new_url = '#/search-'+url+'/'+urlInfo['orderBy']+'/page-'+page;
 					}else{
-						new_url = '#/'+urlInfo['order-by']+'/page-'+page;
+						new_url = '#/'+urlInfo['orderBy']+'/page-'+page;
 					}
 				}else{
 					if(urlInfo['search'] !== ''){
@@ -326,7 +326,21 @@ angular.module('publications',[])
 
 				window.location.href = new_url;
 			},
-			orderBy: function(){
+			orderBy: function(order){
+				$log.log('orderBy: function:::: ',order);
+				var urlInfo = info();
+				var url     = '';
+				var new_url = '';
+
+				if(urlInfo['search'] !== ''){
+					url = $filter('slug')(urlInfo['search']);
+					new_url = '#/search-'+url+'/'+order;
+				}else{
+					new_url = '#/'+order;
+				}
+				$log.log('new_url:::',new_url);
+				window.location.href = '#/highest-price'; // new_url;
+				window.location.href = '#/highest-price'; // new_url;
 			},
 			search:function(){
 			}
@@ -367,22 +381,29 @@ angular.module('publications',[])
 	})
     .controller('PublicationsController',['$scope','$http','notificationService','url','$filter','publications','$log',function($scope,$http,notificationService,url,$filter,publications,$log){
 
-        $log.log('url',url);
-
-		$scope.currentPage = 1;
-		$scope.totalItems = 0;
-		$scope.maxSize 	= 5;
+		//$scope.currentPage 		= 1;
+		//$scope.totalItems 		= 0;
+		//$scope.maxSize 			= 5;
+		//$scope.itemsInThisPage 	= 0;
+		//$scope.totalPages	 	= 0;
 
         $scope.publications = [];
 
 		var getPublications = function(page,orderBy,search){
 
 			$scope.model 			= url.info();
-			$scope.model.page 		= page | $scope.model.page;
-			$scope.model.orderBy 	= orderBy | $scope.model.orderBy;
-			$scope.model.search 	= search | $scope.model.search;
 
-			$log.log('url.info() in getPublications',url.info());
+			//$log.log('before modification $scope.model:',$scope.model);
+            //
+			//$scope.model.page 		= page | $scope.model.page;
+			//$scope.model.orderBy 	= orderBy | $scope.model.orderBy;
+			//$scope.model.search 	= search | $scope.model.search;
+            //
+			$log.log('$scope.model',$scope.model);
+
+
+
+
 			$scope.httpRequestPromise = $http.post('/products', $scope.model).
 				success(function(data) {
 					$log.log('httpRequest data: ',data);
@@ -405,9 +426,13 @@ angular.module('publications',[])
 						//$return['prevPage'] 			= $this->{'request'}->params['paging']['Product']['prevPage'];
 						//$return['nextPage'] 			= $this->{'request'}->params['paging']['Product']['nextPage'];
 
-						$scope.publications = publications.digest(data['products']);
-						$scope.totalItems 	= data['totalItems'];
-						$scope.currentPage 	= data['currentPage'];
+						$scope.publications 	= publications.digest(data['products']);
+						$scope.orderBy 			= data['orderBy'];
+						$scope.search 			= data['search'];
+						$scope.totalItems 		= data['totalItems'];
+						$scope.itemsInThisPage 	= data['itemsInThisPage'];
+						$scope.currentPage 		= data['currentPage'];
+						$scope.totalPages 		= data['totalPages'];
 
 					}else{
 						//window.location = "/";
@@ -423,38 +448,59 @@ angular.module('publications',[])
 			$log.log('info:',url.info());
 		};
 
+		$scope.orderChanged = function(order){
+			$log.log('new order: ',order);
+
+			// establezco una nueva url
+			url.orderBy(order);
+			// solicito obtener nuevamente las publicaciones publicaciones
+			getPublications();
+
+		};
+
  		$scope.pageChanged = function() {
-
-			// establesco una nueva url
+			// establezco una nueva url
 			url.page($scope.currentPage);
-
-			// solicito obtener nuevamenta las publicacines publicaciones
-			getPublications($scope.currentPage);
-
+			// solicito obtener nuevamente las publicaciones publicaciones
+			getPublications();
 		};
 
 		getPublications();
 
     }])
-	.directive('paginate',[function(){
+	.directive('paginationInfo',[function(){
 
-		/*
-		 - toda el código de PublicationsController puede ir en la directiva publications
-		 - la directiva pagination se encarga de establecer la url y lidiar con la paginación
-		 - la directiva filtro se encargará de establecer la url y filtrar los registros
-		 - trata de hacer todo muy genérico para que funcione para cualquier escenario
-		*/
-
-
-	}])
-	.directive('logs',['$http','$templateCache','$compile',function($http,$templateCache,$compile){
 		return {
 			restrict:'E',
 			scope: {
-				'of':'@',
-				'method':'@'
+				'items':'=',
+				'totalItems':'=',
+				'itemsInThisPage':'=',
+				'totalPages':'=',
+				'currentPage':'='
 			},
-			link:function(scope,element,attrs){
+			template:'<div><span ng-if="totalItems == 1">1 publication</span><span ng-if="totalItems == 0">0 publications</span><span ng-if="totalItems > 1"><b>{{info.de}}</b> - <b>{{info.hasta}}</b> of <b>{{totalItems}}</b> publications</span></div>',
+			replace:true,
+			link:function(scope){
+
+				scope.$watch('items', function(){
+					if(scope.totalItems > 1){
+						var de = '';
+						var hasta = '';
+						if(scope.currentPage == scope.totalPages){
+							de 		= scope.totalItems-scope.itemsInThisPage+1;
+							hasta	= scope.totalItems;
+						}
+						if(scope.currentPage < scope.totalPages){
+							de 		= (scope.currentPage*scope.itemsInThisPage)-scope.itemsInThisPage+1;
+							hasta	= scope.currentPage*scope.itemsInThisPage;
+						}
+						scope.info = {
+							'de':de,
+							'hasta':hasta
+						};
+					}
+				});
 
 			}
 		};

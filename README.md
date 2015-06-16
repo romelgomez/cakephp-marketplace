@@ -1,6 +1,6 @@
 # CakePHP MarketPlace
 
-For view the demo, please visit: http://mystock.la/ 
+For view the demo, please visit: http://mystock.la/
 
 ## Installation
 
@@ -51,7 +51,7 @@ ff02::2 ip6-allrouters
 
 ServerName 127.0.0.1:80
 
-# www.santomercado.net
+# www.cakephp-marketplace.net
 <VirtualHost 127.0.0.2:80>
  ServerName www.cakephp-marketplace.net
  DocumentRoot "/home/romelgomez/workspace/projects/cakephp-marketplace/app/webroot"

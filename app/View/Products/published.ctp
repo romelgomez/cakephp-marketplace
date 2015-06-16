@@ -70,21 +70,42 @@
 
 	<button class="btn btn-default" ng-click="logInfo()">logInfo</button>
 
+	<hr>
 	<ul>
 		<li>totalItems {{totalItems}}</li>
 		<li>currentPage {{currentPage}}</li>
 		<li>maxSize {{maxSize}}</li>
+		<li>itemsInThisPage {{itemsInThisPage}}</li>
 	</ul>
+	<hr>
 
 
-<!--	<div ng-if="publications.length > 0">-->
-<!--	</div>-->
+	<div class="btn-group">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			Sort by:  {{orderBy}} <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu dropdown-menu-right" role="menu">
+			<li><a ng-click="orderChanged('latest')" href="#"><span class="glyphicon glyphicon-time"></span> Latest</a></li>
+			<li><a ng-click="orderChanged('oldest')" href="#"><span class="glyphicon glyphicon-calendar"></span> Oldest</a></li>
+
+			<li class="divider"></li>
+
+			<li><a ng-click="orderChanged('highest-price')" href="#"><span class="glyphicon glyphicon-tags"></span> Highest price</a></li>
+			<li><a ng-click="orderChanged('lowest-price')"  href="#"><span class="glyphicon glyphicon-tag"></span> Lowest price</a></li>
+
+			<li class="divider"></li>
+
+			<li><a ng-click="orderChanged('higher-availability')" href="#"><span class="glyphicon glyphicon-th"></span> Higher availability</a></li>
+			<li><a ng-click="orderChanged('lower-availability')"  href="#"><span class="glyphicon glyphicon-th-large"></span> Lower availability</a></li>
+		</ul>
+	</div>
+
 
 	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"  ng-change="pageChanged()"></pagination>
 
-<!--	<pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></pagination>-->
+	<pagination-info items="publications" total-items="totalItems" items-in-this-page="itemsInThisPage" total-pages="totalPages" current-page="currentPage"></pagination-info>
 
-	<!-- <pre>{{publications | json}}</pre>-->
+	<hr>
 	<publications data="publications" type="published"></publications>
 
 </section>
@@ -103,7 +124,7 @@
                 </div>
             </section>
 
-            <section id="yes-products" style="display: none;">
+            <section id="yes-products" style="">
                 <div class="panel panel-default" style="border: 1px solid black;">
                     <div class="panel-body" style=" padding-top: 10px; padding-bottom: 10px; border-top-left-radius: 4px; border-top-right-radius: 4px; background: url(/resources/app/img/escheresque_ste.png);">
                         <a href="/published" style="font-size: 30px;">Published</a>
@@ -135,7 +156,7 @@
 
                                     <!-- Paginación.
                                     -------------------------------------------------------------------------------------->
-                                    <div id="pagination" style="display:none; overflow: hidden;  float: left;"   >
+                                    <div id="pagination" style="overflow: hidden;  float: left;"   >
                                         <div style="float: left; margin-right: 10px; ">
                                             <div class="btn-group" >
                                                 <button id="prev-page" class="btn btn-default disabled" disabled><i class="icon-chevron-left"></i> Previous</button>
@@ -146,7 +167,7 @@
 
                                     <!-- Ordenar por
                                     ---------------------------------------------------------------------------------------->
-                                    <div id="order-by" style="display:none; float: left; margin-right: 10px; ">
+                                    <div id="order-by" style="float: left; margin-right: 10px; ">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                                 Sort by:  <span id="order-by-text">Latest</span> <span class="caret"></span>

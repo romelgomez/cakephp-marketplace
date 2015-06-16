@@ -476,7 +476,7 @@
 			$page = (int)$request['page'];
 		}
 
-		if(!isset($request['order-by']) || $request['order-by'] == ''){
+		if(!isset($request['orderBy']) || $request['orderBy'] == ''){
 
 			$order = array(
 				'Product.created' => 'desc'
@@ -486,7 +486,7 @@
 
 		}else{
 
-			switch ($request['order-by']) {
+			switch ($request['orderBy']) {
 				case 'highest-price':
 					$order = array(
 						'Product.price' => 'desc'
@@ -582,7 +582,7 @@
 
 				$return['status'] 								= 'success';
 				$return['data']['total-products'] 				= $totalProducts;
-				$return['data']['order-by'] 					= $orderBy;
+				$return['data']['orderBy'] 					= $orderBy;
 				$return['data']['search'] 						= $search;
 				$return['data']['products'] 					= $products;
 				$return['data']['paging-info']['count'] 		= $this->{'request'}->params['paging']['Product']['count'];
@@ -614,7 +614,7 @@
 
 					$return['status'] 								= 'success';
 					$return['data']['total-products'] 				= $totalProducts;
-					$return['data']['order-by'] 					= $orderBy;
+					$return['data']['orderBy'] 					= $orderBy;
 					$return['data']['search'] 						= $search;
 					$return['data']['products'] 					= $products;
 					$return['data']['paging-info']['count'] 		= $this->{'request'}->params['paging']['Product']['count'];
