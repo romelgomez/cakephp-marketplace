@@ -259,15 +259,8 @@ angular.module('publications',[])
 				if(splitSegments.length){
 					angular.forEach(splitSegments, function(parameter) {
 						if(parameter.indexOf("search-") !== -1){
-							var search_string = $filter('stringReplace')(parameter,'search-',''); //
-							/* La cadena search_string se manipula en el siguiente orden.
-							 *
-							 * 1) se reemplaza los caracteres especiales
-							 * 2) se elimina los espacios en blancos ante y después de la cadena
-							 * 3) se reemplaza los espacios en blancos largos por uno solo.
-							 *
-							 ********************************************************************/
-							url_obj.search = search_string.replace(/[^a-zA-Z0-9]/g,' ').trim().replace(/\s{2,}/g, ' ');
+							var search_string 	= $filter('stringReplace')(parameter,'search-','');
+							url_obj.search 		= $filter('noSpecialChars')(search_string);
 						}
 						if(parameter.indexOf("page-") !== -1){
 							url_obj.page = parseInt($filter('stringReplace')(parameter,'page-',''));
@@ -413,15 +406,6 @@ angular.module('publications',[])
 				});
 		};
 
-		//$scope.logInfo = function(){
-		//	$log.log('info:',url.info());
-		//};
-
-
-		//$scope.newLocation = function(order){
-		//	window.location.href = '#/'+order;
-		//};
-
 		$scope.submit = function () {
 			if($scope.form.$valid){
 				// set new url
@@ -547,9 +531,14 @@ angular.module('filters',[])
     })
     .filter('slug', function() {
         return function(input) {
-            return (!!input) ? String(input).trim().toLowerCase().replace(/([-()\[\]{}+?*.$\^|,:#<!\\®\/´`·"])/g, ' ').replace(/\s+/g, ' ').replace(/\s+/g, '-').replace(/-$/, '') : '';  //  http://www.regexr.com/  | http://stackoverflow.com/questions/11092951/regex-friendly-url
+			return (!!input) ? String(input).replace(/[^a-zá-źA-ZÁ-Ź0-9]/g, ' ').trim().replace(/\s{2,}/g, ' ').replace(/\s+/g, '-') : '';  //  http://www.regexr.com/
         };
     })
+	.filter('noSpecialChars', function() {
+		return function(input) {
+			return (!!input) ? String(input).replace(/[^a-zá-źA-ZÁ-Ź0-9]/g, ' ').trim().replace(/\s{2,}/g, ' ') : '';  //  http://www.regexr.com/
+		};
+	})
     .filter('capitalizeFirstChar', function() {
         return function(input) {
             return (!!input) ? input.trim().replace(/(^\w{0,1})/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1);}) : '';
