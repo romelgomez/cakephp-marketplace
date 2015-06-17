@@ -68,45 +68,50 @@
 
 <section ng-controller="PublicationsController" style="padding: 15px;">
 
-	<button class="btn btn-default" ng-click="logInfo()">logInfo</button>
-
-	<hr>
-	<ul>
-		<li>totalItems {{totalItems}}</li>
-		<li>currentPage {{currentPage}}</li>
-		<li>maxSize {{maxSize}}</li>
-		<li>itemsInThisPage {{itemsInThisPage}}</li>
-	</ul>
-	<hr>
-
+<!--	dropdown-menu-right-->
 
 	<div class="btn-group">
 		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-			Sort by:  {{orderBy}} <span class="caret"></span>
+			Sort by:  {{orderBy | stringReplace:'-':' ' | capitalizeFirstChar}} <span class="caret"></span>
 		</button>
-		<ul class="dropdown-menu dropdown-menu-right" role="menu">
-			<li><a ng-click="orderChanged('latest')" href="#"><span class="glyphicon glyphicon-time"></span> Latest</a></li>
-			<li><a ng-click="orderChanged('oldest')" href="#"><span class="glyphicon glyphicon-calendar"></span> Oldest</a></li>
+		<ul class="dropdown-menu" role="menu">
+			<li><a ng-click="orderChanged('latest')" ><span class="glyphicon glyphicon-time"></span> Latest</a></li>
+			<li><a ng-click="orderChanged('oldest')" ><span class="glyphicon glyphicon-calendar"></span> Oldest</a></li>
 
 			<li class="divider"></li>
 
-			<li><a ng-click="orderChanged('highest-price')" href="#"><span class="glyphicon glyphicon-tags"></span> Highest price</a></li>
-			<li><a ng-click="orderChanged('lowest-price')"  href="#"><span class="glyphicon glyphicon-tag"></span> Lowest price</a></li>
+			<li><a ng-click="orderChanged('highest-price')" ><span class="glyphicon glyphicon-tags"></span> Highest price</a></li>
+			<li><a ng-click="orderChanged('lowest-price')"  ><span class="glyphicon glyphicon-tag"></span> Lowest price</a></li>
 
 			<li class="divider"></li>
 
-			<li><a ng-click="orderChanged('higher-availability')" href="#"><span class="glyphicon glyphicon-th"></span> Higher availability</a></li>
-			<li><a ng-click="orderChanged('lower-availability')"  href="#"><span class="glyphicon glyphicon-th-large"></span> Lower availability</a></li>
+			<li><a ng-click="orderChanged('higher-availability')" ><span class="glyphicon glyphicon-th"></span> Higher availability</a></li>
+			<li><a ng-click="orderChanged('lower-availability')"  ><span class="glyphicon glyphicon-th-large"></span> Lower availability</a></li>
 		</ul>
 	</div>
+	<hr>
 
+	<form name="form" novalidate="" ng-submit="submit()">
+		<div class="form-group" style="margin-bottom: 0;">
+			<div class="input-group">
+				<input type="text" name="search" ng-model="search" required class="form-control"  placeholder="Eje: Laptops">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="submit">Search</button>
+				</span>
+			</div>
+		</div>
+	</form>
 
-	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"  ng-change="pageChanged()"></pagination>
-
-	<pagination-info items="publications" total-items="totalItems" items-in-this-page="itemsInThisPage" total-pages="totalPages" current-page="currentPage"></pagination-info>
+<!--	<pre>{{form | json}}</pre>-->
 
 	<hr>
+	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"  ng-change="pageChanged()"></pagination>
+	<hr>
+	<pagination-info items="publications" total-items="totalItems" items-in-this-page="itemsInThisPage" total-pages="totalPages" current-page="currentPage"></pagination-info>
+	<hr>
 	<publications data="publications" type="published"></publications>
+	<hr>
+
 
 </section>
 

@@ -305,20 +305,20 @@ angular.module('publications',[])
 			},
 			page: function(page){
 				var urlInfo = info();
-				var url     = '';
+				var slug     = '';
 				var new_url = '';
 
 				if(urlInfo['orderBy'] != ''){
 					if(urlInfo['search'] !== ''){
-						url = $filter('slug')(urlInfo['search']);
-						new_url = '#/search-'+url+'/'+urlInfo['orderBy']+'/page-'+page;
+						slug = $filter('slug')(urlInfo['search']);
+						new_url = '#/search-'+slug+'/'+urlInfo['orderBy']+'/page-'+page;
 					}else{
 						new_url = '#/'+urlInfo['orderBy']+'/page-'+page;
 					}
 				}else{
 					if(urlInfo['search'] !== ''){
-						url = $filter('slug')(urlInfo['search']);
-						new_url = "#/search-"+url+"/page-"+page;
+						slug = $filter('slug')(urlInfo['search']);
+						new_url = "#/search-"+slug+"/page-"+page;
 					}else{
 						new_url = "#/page-"+page;
 					}
@@ -327,22 +327,21 @@ angular.module('publications',[])
 				window.location.href = new_url;
 			},
 			orderBy: function(order){
-				$log.log('orderBy: function:::: ',order);
 				var urlInfo = info();
-				var url     = '';
 				var new_url = '';
 
 				if(urlInfo['search'] !== ''){
-					url = $filter('slug')(urlInfo['search']);
-					new_url = '#/search-'+url+'/'+order;
+					var slug = $filter('slug')(urlInfo['search']);
+					new_url = '#/search-'+slug+'/'+order;
 				}else{
 					new_url = '#/'+order;
 				}
-				$log.log('new_url:::',new_url);
-				window.location.href = '#/highest-price'; // new_url;
-				window.location.href = '#/highest-price'; // new_url;
+				window.location.href = new_url;
 			},
-			search:function(){
+			search:function(searchText){
+				$log.log('searchText',searchText);
+				var slug = $filter('slug')(searchText);
+				window.location.href = '#/search-'+slug;
 			}
 		};
 
@@ -381,30 +380,12 @@ angular.module('publications',[])
 	})
     .controller('PublicationsController',['$scope','$http','notificationService','url','$filter','publications','$log',function($scope,$http,notificationService,url,$filter,publications,$log){
 
-		//$scope.currentPage 		= 1;
-		//$scope.totalItems 		= 0;
-		//$scope.maxSize 			= 5;
-		//$scope.itemsInThisPage 	= 0;
-		//$scope.totalPages	 	= 0;
-
         $scope.publications = [];
+		$scope.orderBy = '';
 
-		var getPublications = function(page,orderBy,search){
+		var getPublications = function(){
 
-			$scope.model 			= url.info();
-
-			//$log.log('before modification $scope.model:',$scope.model);
-            //
-			//$scope.model.page 		= page | $scope.model.page;
-			//$scope.model.orderBy 	= orderBy | $scope.model.orderBy;
-			//$scope.model.search 	= search | $scope.model.search;
-            //
-			$log.log('$scope.model',$scope.model);
-
-
-
-
-			$scope.httpRequestPromise = $http.post('/products', $scope.model).
+			$scope.httpRequestPromise = $http.post('/products', url.info()).
 				success(function(data) {
 					$log.log('httpRequest data: ',data);
 
@@ -413,18 +394,6 @@ angular.module('publications',[])
 					}
 
 					if(data['status'] === 'success'){
-
-						// 	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" boundary-links="true" rotate="false" num-pages="numPages" class="pagination-sm"></pagination>
-						//$return['status'] 			= 'success';
-						//$return['products'] 			= $products;
-						//$return['orderBy']	 		= $orderBy;
-						//$return['search'] 			= $search;
-						//$return['totalItems'] 		= $this->{'request'}->params['paging']['Product']['count'];
-						//$return['itemsInThisPage'] 	= $this->{'request'}->params['paging']['Product']['current'];
-						//$return['currentPage'] 		= $this->{'request'}->params['paging']['Product']['page'];
-						//$return['totalPages'] 		= $this->{'request'}->params['paging']['Product']['pageCount'];
-						//$return['prevPage'] 			= $this->{'request'}->params['paging']['Product']['prevPage'];
-						//$return['nextPage'] 			= $this->{'request'}->params['paging']['Product']['nextPage'];
 
 						$scope.publications 	= publications.digest(data['products']);
 						$scope.orderBy 			= data['orderBy'];
@@ -444,24 +413,35 @@ angular.module('publications',[])
 				});
 		};
 
-		$scope.logInfo = function(){
-			$log.log('info:',url.info());
+		//$scope.logInfo = function(){
+		//	$log.log('info:',url.info());
+		//};
+
+
+		//$scope.newLocation = function(order){
+		//	window.location.href = '#/'+order;
+		//};
+
+		$scope.submit = function () {
+			if($scope.form.$valid){
+				// set new url
+				url.search($scope.search);
+				// request again the publications
+				getPublications();
+			}
 		};
 
 		$scope.orderChanged = function(order){
-			$log.log('new order: ',order);
-
-			// establezco una nueva url
+			// set new url
 			url.orderBy(order);
-			// solicito obtener nuevamente las publicaciones publicaciones
+			// request again the publications
 			getPublications();
-
 		};
 
- 		$scope.pageChanged = function() {
-			// establezco una nueva url
+		$scope.pageChanged = function() {
+			// set new url
 			url.page($scope.currentPage);
-			// solicito obtener nuevamente las publicaciones publicaciones
+			// request again the publications
 			getPublications();
 		};
 
@@ -567,7 +547,7 @@ angular.module('filters',[])
     })
     .filter('slug', function() {
         return function(input) {
-            return (!!input) ? String(input).trim().toLowerCase().replace(/([-()\[\]{}+?*.$\^|,:#<!\\®\/´`])/g, ' ').replace(/\s+/g, ' ').replace(/\s+/g, '-') : '';  //  http://www.regexr.com/  | http://stackoverflow.com/questions/11092951/regex-friendly-url
+            return (!!input) ? String(input).trim().toLowerCase().replace(/([-()\[\]{}+?*.$\^|,:#<!\\®\/´`·"])/g, ' ').replace(/\s+/g, ' ').replace(/\s+/g, '-').replace(/-$/, '') : '';  //  http://www.regexr.com/  | http://stackoverflow.com/questions/11092951/regex-friendly-url
         };
     })
     .filter('capitalizeFirstChar', function() {
