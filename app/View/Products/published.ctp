@@ -94,15 +94,27 @@
 	<form name="form" novalidate="" ng-submit="submit()">
 		<div class="form-group" style="margin-bottom: 0;">
 			<div class="input-group">
-				<input type="text" name="search" ng-model="search" required class="form-control"  placeholder="Eje: Laptops">
+				<input type="text" name="search" ng-model="search" required no-special-chars class="form-control"  placeholder="Eje: Laptops">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="submit">Search</button>
 				</span>
 			</div>
 		</div>
+
+        <div data-ng-messages="form.$submitted && form.search.$error" class="help-block">
+            <div data-ng-message="noSpecialChars" >
+                - El <b>texto</b> no debe contener caracteres especiales.
+            </div>
+            <div data-ng-message="required" >
+                - La <b>texto</b> es requerido.
+            </div>
+        </div>
+
 	</form>
 
-<!--	<pre>{{form | json}}</pre>-->
+
+
+<!--    <pre>{{form | json}}</pre>-->
 
 	<hr>
 	<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"  ng-change="pageChanged()"></pagination>
