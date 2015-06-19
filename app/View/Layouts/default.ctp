@@ -170,9 +170,7 @@ switch($urlAction){
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Account <?php if(isset($userLogged)){ echo '( '.$userLogged['User']['name'].' )'; } ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="presentation" class="dropdown-header">PRODUCTS</li>
-                        <li><a ng-href="/published"><span class="glyphicon glyphicon-bullhorn"></span> Published</a></li>
-                        <li><a ng-href="/drafts"><span class="glyphicon glyphicon-pencil"></span> Drafts</a></li>
+                        <li><a ng-href="/publications"><span class="glyphicon glyphicon-bullhorn"></span> publications</a></li>
                         <li><a ng-href="/stock/<?php echo $userLogged['User']['id']; ?>"><span class="glyphicon glyphicon-th"></span>  Stock</a></li>
                     </ul>
                 </li>

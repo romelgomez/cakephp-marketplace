@@ -400,11 +400,11 @@
 		$totalProducts 	= array();
 
 		switch ($request['action']) {
-			case 'published':
+			case 'publications':
 
 				// search - conditions
 				if(!isset($request['search']) || $request['search'] == ''){
-					$conditions = array('Product.user_id' => $userLogged['User']['id'],'Product.deleted'=>0,'Product.published'=>1);
+					$conditions = array('Product.user_id' => $userLogged['User']['id'],'Product.deleted'=>0);
 				}else{
 					$search = $this->cleanString($request["search"]);
 					$conditions = array(
@@ -420,28 +420,6 @@
 
 				// total_products es la cantidad total de productos publicados, este resultado es indiferente a los filtros aplicados por el usuario.
 				$totalProducts = $this->{'Product'}->find('count', array('conditions'=> array('Product.user_id' => $userLogged['User']['id'],'Product.deleted'=>0,'Product.published'=>1)));
-
-				break;
-			case 'drafts':
-
-				// search - conditions
-				if(!isset($request['search']) || $request['search'] == ''){
-					$conditions = array('Product.user_id' => $userLogged['User']['id'],'Product.deleted'=>0,'Product.published'=>0);
-				}else{
-					$search = $this->cleanString($request["search"]);
-					$conditions = array(
-						'Product.user_id' => $userLogged['User']['id'],
-						'Product.deleted'=>0,
-						'Product.published'=>0,
-						'or'=>array(
-							'Product.title LIKE'=> '%'.$search.'%',
-							'Product.body LIKE'=> '%'.$search.'%'
-						)
-					);
-				}
-
-				// total_products es la cantidad total de productos publicados, este resultado es indiferente a los filtros aplicados por el usuario.
-				$totalProducts = $this->{'Product'}->find('count', array('conditions'=> array('Product.user_id' => $userLogged['User']['id'],'Product.deleted'=>0,'Product.published'=>0)));
 
 				break;
 			case 'stock':
@@ -638,7 +616,7 @@
         $action  = $request['action'];
 		$return	 = array();
 
-		if($action === 'stock' || $action  === 'published' || $action  === 'drafts'){
+		if($action === 'stock' || $action  === 'publications'){
 
 			$return = $this->getPublications($request);
 

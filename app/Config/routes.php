@@ -70,8 +70,8 @@ Router::connect('/delete', 									array('controller' => 'products',	 'action' 
 Router::connect('/add_new',									array('controller' => 'products', 	'action' => 'add_new'));						// Acción Ajax - para guardar una nueva publicación.
 Router::connect('/save-draft',	 							array('controller' => 'products',	'action' => 'saveDraft'));	   					// Acción Ajax - para guardar un borrador
 
-Router::connect('/published', 								array('controller' => 'products',	'action' => 'published'));	   					// Acción Get  - Interfaz para acceder a los productos publicados
-Router::connect('/drafts',	 								array('controller' => 'products',	'action' => 'drafts'));	   						// Acción Get  - Interfaz para acceder a los borradores
+Router::connect('/publications', 								array('controller' => 'products',	'action' => 'published'));	   					// Acción Get  - Interfaz para acceder a los productos publicados
+//Router::connect('/drafts',	 								array('controller' => 'products',	'action' => 'drafts'));	   						// Acción Get  - Interfaz para acceder a los borradores
 
 Router::connect('/stock/:id',                               array('controller' => 'products', 	'action' => 'stock'),           	            // Acción Get  - Interfaz para acceder al stock del usuario
     array(

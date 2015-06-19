@@ -499,13 +499,6 @@ angular.module('publications',[])
 								template = 'noPublished.html';
 							}
 							break;
-						case 'drafts':
-							if(scope.publications.length > 0){
-								template = 'drafts.html';
-							}else{
-								template = 'noDrafts.html';
-							}
-							break;
 						case 'stock':
 							if(scope.publications.length > 0){
 								template = 'stock.html';
