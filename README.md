@@ -1,7 +1,5 @@
 # CakePHP MarketPlace
 
-For view the demo, please visit: http://mystock.la/
-
 ## Installation
 
 - Download CakePHP VERSION 2.x
